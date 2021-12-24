@@ -10,12 +10,16 @@ const typeDefs = gql`
         location: String
         gender: String
         preference: String
-        agerange.min: Int
-        agerange.max: Int
+        agerange: [AgeRange]
         hobbies: String
         aboutme: String
         likes: [String]
         likedby: String
+    }
+
+    type AgeRange {
+        min: Int
+        max: Int
     }
 
     type Auth {

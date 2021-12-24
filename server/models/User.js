@@ -46,7 +46,6 @@ const userSchema = new Schema(
         },
         agerange: {
             // Number range validator I saw in stackoverflow, will test later
-            required: true,
             min: {
                 type: Number,
                 min: 18,
@@ -128,8 +127,7 @@ userSchema.virtual('matches', {
 });
 
 const User = model('User', userSchema);
-const doc = await User.findOne().populate('matches');
-console.log(doc.matches);
+const doc = User.findOne().populate('matches');
 
 module.exports = User
 
