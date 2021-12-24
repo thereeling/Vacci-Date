@@ -104,10 +104,32 @@ const userSchema = new Schema(
     }
 );
 
-userSchema.virtual('matches').get(function() {
-    this.likes.forEach(like => {
-        userSchema.find({likedby: _id}).$where(`this.likedby._id === ${like}`)
-        
-    });
-    
+// hash user password
+userSchema.pre('save', async function (next) {
+    if (this.isNew || this.isModified('password')) {
+      const saltRounds = 10;
+      this.password = await bcrypt.hash(this.password, saltRounds);
+    }
+  
+    next();
+  });
+
+// custom method to compare and validate password for logging in
+userSchema.methods.isCorrectPassword = async function (password) {
+    return bcrypt.compare(password, this.password);
+  };
+
+// Try this method for population first
+
+userSchema.virtual('matches', {
+    ref: 'User',
+    localField: 'likes',
+    foreignField: 'likedby'
 });
+
+const User = model('User', userSchema);
+const doc = await User.findOne().populate('matches');
+console.log(doc.matches);
+
+module.exports = User
+
