@@ -71,10 +71,10 @@ const userSchema = new Schema(
             }
         },
         // Don't know what to put in hobby list, will bring to groups attention
-        hobbies: {
+        hobbies: [{
             type: String,
             enum: ['etc..']
-        },
+        }],
         aboutme: {
             type: String,
             required: true,
@@ -84,7 +84,14 @@ const userSchema = new Schema(
         img: {
             type: String,
         },
-        matches: {
+        /*
+            How the 'Match/Like' functionality will work:  When you see a User YOU like and you click the 'Like' button, THAT USER's ID get's added to YOUR 'Likes' list.  Also, YOUR User ID will get added to THEIR 'Liked By' list.  Then Mongoose will perform a 'populate' operator that checks YOUR 'Likes' list AND 'Liked By' list to see if there are MATCHING USER ID's.  That User's ID will be added to YOUR matches list.  If you 'Dislike' a User, nothing will happen except a new User appearing on screen (People change their minds <3).
+        */
+        likes: [{
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+        }],
+        likedby: {
             type: Schema.Types.ObjectId,
             ref: 'User'
         }
@@ -92,6 +99,15 @@ const userSchema = new Schema(
     {
         toJSON: {
             virtuals: true
-        }
+        },
+        id: false
     }
 );
+
+userSchema.virtual('matches').get(function() {
+    this.likes.forEach(like => {
+        userSchema.find({likedby: _id}).$where(`this.likedby._id === ${like}`)
+        
+    });
+    
+});
