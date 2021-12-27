@@ -15,6 +15,10 @@ const resolvers = {
       
             throw new AuthenticationError('Not logged in');
           },
+        all: async (parent) => {
+          const userData = await User.find()
+          return userData
+        }
     },
 
     Mutation: {
