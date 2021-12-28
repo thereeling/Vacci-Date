@@ -44,35 +44,35 @@ const userSchema = new Schema(
             required: true,
             enum: ['Men', 'Women', 'No Preference']
         },
-        agerange: {
-            // Number range validator I saw in stackoverflow, will test later
-            min: {
-                type: Number,
-                min: 18,
-                validate: {
-                    validator: function(val){
-                        const ageMax = this.target.agerange.max;
-                        return (ageMax !== undefined ? val <= ageMax : true);
-                    },
-                    message: 'The MIN range with value {VALUE} must be <= the max range!'
-                }
-            },
-            max: {
-                type: Number,
-                min: 18,
-                validate: {
-                    validator: function(val){
-                        const ageMin = this.target.agerange.min;
-                        return (ageMin !== undefined ? val >= ageMin : true);
-                    },
-                    message: 'The MIN range with value {VALUE} must be >= the min range!'
-                }
-            }
+       
+        // Number range validator I saw in stackoverflow, will test later
+        agerangemin: {
+            type: Number,
+            min: 18,
+            // validate: {
+            //     validator: function(val){
+            //         const ageMax = this.target.agerangemax;
+            //         return (ageMax !== undefined ? val <= ageMax : true);
+            //     },
+            //     message: 'The MIN range with value {VALUE} must be <= the max range!'
+            // }
         },
+        agerangemax: {
+            type: Number,
+            min: 18,
+            // validate: {
+            //     validator: function(val){
+            //         const ageMin = this.target.agerangemin;
+            //         return (ageMin !== undefined ? val >= ageMin : true);
+            //     },
+            //     message: 'The MIN range with value {VALUE} must be >= the min range!'
+            // }
+        },
+
         // Don't know what to put in hobby list, will bring to groups attention
         hobbies: [{
             type: String,
-            enum: ['etc..']
+            // enum: ['etc..']
         }],
         aboutme: {
             type: String,
@@ -120,14 +120,14 @@ userSchema.methods.isCorrectPassword = async function (password) {
 
 // Try this method for population first
 
-userSchema.virtual('matches', {
-    ref: 'User',
-    localField: 'likes',
-    foreignField: 'likedby'
-});
+// userSchema.virtual('matches', {
+//     ref: 'User',
+//     localField: 'likes',
+//     foreignField: 'likedby'
+// });
 
 const User = model('User', userSchema);
-const doc = User.findOne().populate('matches');
+// const doc = User.findOne().populate('matches');
 
 module.exports = User
 

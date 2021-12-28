@@ -1,4 +1,4 @@
-const { User } = require('../models/User');
+const { User } = require('../models');
 const { signToken } = require('../utils/auth');
 const { AuthenticationError } = require('apollo-server-express');
 
@@ -15,6 +15,10 @@ const resolvers = {
       
             throw new AuthenticationError('Not logged in');
           },
+        all: async (parent) => {
+          const userData = await User.find()
+          return userData
+        }
     },
 
     Mutation: {
@@ -35,10 +39,21 @@ const resolvers = {
             return { token, user };
           },
         addUser: async (parent, args) => {
-            const user = await User.create(args);
+            const user = await User.create(args.input);
             const token = signToken(user);
         
             return { token, user };
+        },
+        like: async (parent, args, context) => {
+          const updatedUser = await User.findByIdAndUpdate(
+            { _id: context.user._id }, 
+            {$push: {likes: { _id: args._id}}},
+            { new: true}
+          )
+          if(!updatedUser){
+            throw new AuthenticationError('Could not find a User with this ID!');
+          }
+          return updatedUser;
         }
     }
 };

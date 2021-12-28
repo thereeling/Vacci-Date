@@ -10,16 +10,12 @@ const typeDefs = gql`
         location: String
         gender: String
         preference: String
-        agerange: [AgeRange]
+        agerangemin: Int
+        agerangemax: Int
         hobbies: String
         aboutme: String
         likes: [String]
         likedby: String
-    }
-
-    type AgeRange {
-        min: Int
-        max: Int
     }
 
     type Auth {
@@ -28,12 +24,29 @@ const typeDefs = gql`
     }
 
     type Query {
+    all: [User]
     me: User
+    }
+
+    input UserInput {
+        username: String
+        firstname: String
+        email: String
+        password: String
+        age: Int
+        location: String
+        gender: String
+        preference: String
+        agerangemin: Int
+        agerangemax: Int
+        hobbies: String
+        aboutme: String
     }
 
     type Mutation {
         login(username: String!, password: String!): Auth
-        addUser(username: String!, email: String!, password: String!): Auth
+        addUser(input: UserInput): Auth
+        like(_id: ID): Auth
     }
 `;
 
