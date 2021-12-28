@@ -54,6 +54,17 @@ const resolvers = {
             throw new AuthenticationError('Could not find a User with this ID!');
           }
           return updatedUser;
+        },
+        likedby: async (parent, args, context) => {
+          const updatedUser = await User.findByIdAndUpdate(
+            { _id: args._id }, 
+            {$push: {likedby: { _id: context.user._id}}},
+            { new: true}
+          )
+          if(!updatedUser){
+            throw new AuthenticationError('Could not find a User with this ID!');
+          }
+          return updatedUser;
         }
     }
 };

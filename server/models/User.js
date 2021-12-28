@@ -70,10 +70,10 @@ const userSchema = new Schema(
         },
 
         // Don't know what to put in hobby list, will bring to groups attention
-        hobbies: [{
+        hobbies: {
             type: String,
             // enum: ['etc..']
-        }],
+        },
         aboutme: {
             type: String,
             required: true,
@@ -88,12 +88,14 @@ const userSchema = new Schema(
         */
         likes: [{
             type: Schema.Types.ObjectId,
-            ref: 'User'
+            ref: 'User',
+            // unique: true
         }],
-        likedby: {
+        likedby: [{
             type: Schema.Types.ObjectId,
-            ref: 'User'
-        }
+            ref: 'User',
+            // unique: true
+        }]
     },
     {
         toJSON: {
@@ -120,14 +122,15 @@ userSchema.methods.isCorrectPassword = async function (password) {
 
 // Try this method for population first
 
-// userSchema.virtual('matches', {
-//     ref: 'User',
-//     localField: 'likes',
-//     foreignField: 'likedby'
-// });
 
 const User = model('User', userSchema);
 // const doc = User.findOne().populate('matches');
 
+User.aggregate([
+    { $project: {likes: 1, likedby: 1, commonToBoth: { $setIntersection: ['$likes', '$likedby']}}}
+    // { $setIntersection: [ User.likes, User.likedby ]}
+], function(err, result){
+    console.log(result)
+});
 module.exports = User
 
