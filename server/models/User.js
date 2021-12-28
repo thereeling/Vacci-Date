@@ -88,7 +88,8 @@ const userSchema = new Schema(
         */
         likes: [{
             type: Schema.Types.ObjectId,
-            ref: 'User'
+            ref: 'User',
+            unique: true
         }],
         likedby: {
             type: Schema.Types.ObjectId,
