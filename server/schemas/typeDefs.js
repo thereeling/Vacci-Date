@@ -47,6 +47,7 @@ const typeDefs = gql`
         login(username: String!, password: String!): Auth
         addUser(input: UserInput): Auth
         like(_id: ID): User
+        likedby(_id: ID): User
     }
 `;
 

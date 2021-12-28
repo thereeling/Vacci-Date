@@ -127,8 +127,9 @@ userSchema.methods.isCorrectPassword = async function (password) {
 //     foreignField: 'likedby'
 // });
 
-const User = model('User', userSchema);
 // const doc = User.findOne().populate('matches');
+const User = model('User', userSchema);
+
 
 module.exports = User
 
