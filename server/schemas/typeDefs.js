@@ -15,7 +15,7 @@ const typeDefs = gql`
         hobbies: String
         aboutme: String
         likes: [String]
-        likedby: String
+        likedby: [String]
     }
 
     type Auth {
