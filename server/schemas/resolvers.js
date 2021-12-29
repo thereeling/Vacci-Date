@@ -66,6 +66,29 @@ const resolvers = {
           }
           return updatedUser;
         }
+        // match: async (parent, args, context) => {
+        //   console.log(context.user);
+        //   let matcharr = [];
+        //   for (let i = 0; i < context.user.likes.length; i++) {
+              
+        //       for (let j = 0; j < context.user.likedby.length; j++) {
+        //           if(likes[i] === likedby[j]){
+        //               matcharr.push(likes[i])
+        //           }
+        //       }    
+        //   }
+        //   console.log(matcharr);
+        //   const updatedUser = await User.findByIdAndUpdate(
+        //     { _id: context.user._id }, 
+        //     {$push: {matches: {matcharr}}},
+        //     { new: true}
+        //   )
+        //   if(!updatedUser){
+        //     throw new AuthenticationError('Could not find a User with this ID!');
+        //   }
+        //   console.log(updatedUser.matches);
+        //   return updatedUser;
+        // }
     }
 };
 

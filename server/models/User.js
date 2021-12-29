@@ -95,10 +95,17 @@ const userSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: 'User',
             // unique: true
-        }]
+        }],
+        matches: {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+        }
     },
     {
         toJSON: {
+            virtuals: true
+        },
+        toObject: {
             virtuals: true
         },
         id: false
@@ -123,14 +130,39 @@ userSchema.methods.isCorrectPassword = async function (password) {
 // Try this method for population first
 
 
+// .get(function() {
+//     let matcharr = [];
+//     for (let i = 0; i < likes.length; i++) {
+        
+//         for (let j = 0; j < likedby.length; j++) {
+//             if(likes[i] === likedby[j]){
+//                 matcharr.push(likes[i])
+//             }
+//         }    
+//     }
+//     console.log(matcharr);
+//     return matcharr;
+// })
+
+
+
+
 const User = model('User', userSchema);
-// const doc = User.findOne().populate('matches');
+// userSchema.virtual('matches', {
+//     ref: 'User',
+//     localField: 'likes',
+//     foreignField: 'likedby',
+// })
 
 User.aggregate([
-    { $project: {likes: 1, likedby: 1, commonToBoth: { $setIntersection: ['$likes', '$likedby']}}}
-    // { $setIntersection: [ User.likes, User.likedby ]}
-], function(err, result){
-    console.log(result)
+    { $project: { matches: { $setIntersection: ['$likes', '$likedby']}}}
+]).exec(function (err, result, callback){
+        for (let i = 0; i < result.length; i++) {
+            console.log(result[i].matches)
+            User.populate(result[i].matches, {path: `matches`}, callback);
+        }
+    
 });
+
 module.exports = User
 

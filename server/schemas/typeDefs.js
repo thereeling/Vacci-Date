@@ -16,6 +16,8 @@ const typeDefs = gql`
         aboutme: String
         likes: [String]
         likedby: [String]
+        matches: [String]
+    
     }
 
     type Auth {
@@ -48,6 +50,7 @@ const typeDefs = gql`
         addUser(input: UserInput): Auth
         like(_id: ID): User
         likedby(_id: ID): User
+        match: User
     }
 `;
 
