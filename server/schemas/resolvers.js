@@ -47,7 +47,7 @@ const resolvers = {
         like: async (parent, args, context) => {
           const updatedUser = await User.findByIdAndUpdate(
             { _id: context.user._id }, 
-            {$push: {likes: { _id: args._id}}},
+            { $addToSet: { likes: { _id: args._id } } },
             { new: true}
           )
           if(!updatedUser){
@@ -58,14 +58,30 @@ const resolvers = {
         likedby: async (parent, args, context) => {
           const updatedUser = await User.findByIdAndUpdate(
             { _id: args._id }, 
-            {$push: {likedby: { _id: context.user._id}}},
+            { $addToSet: { likedby: { _id: context.user._id } } },
             { new: true}
           )
           if(!updatedUser){
             throw new AuthenticationError('Could not find a User with this ID!');
           }
           return updatedUser;
-        }
+        },
+        match: async (parent, args, context) => {
+          const me = await User.findOne({ _id: context.user._id })
+                .select('-__v -password')
+          
+          const matchArray = me.likes.filter(id => me.likedby.includes(id));
+          const updatedUser = await User.findByIdAndUpdate(
+            { _id: context.user._id }, 
+            { $addToSet: { matches: { $each: matchArray } }
+            },
+            { new: true}
+          )
+          if(!updatedUser){
+            throw new AuthenticationError('Could not find a User with this ID!');
+          }
+          return updatedUser;
+        },
     }
 };
 
