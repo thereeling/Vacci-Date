@@ -104,13 +104,12 @@ const resolvers = {
       return updatedUser;
     },
 
-    unlike: async (parent, args, context) => {
+    unlike: async (parent, { _id }, context) => {
       const updatedUser = await User.findByIdAndUpdate(
         { _id: context.user._id }, 
-        { $pull: { likes: { _id: args._id } } },
+        { $pull: { likes: _id } },
         { new: true}
       )
-
       if(!updatedUser){
         throw new AuthenticationError('Could not find a User with this ID!');
       }
@@ -121,7 +120,7 @@ const resolvers = {
     unlikedby: async (parent, args, context) => {
       const updatedUser = await User.findByIdAndUpdate(
         { _id: args._id }, 
-        { $pull: { likedby: { _id: context.user._id } } },
+        { $pull: { likedby: context.user._id } },
         { new: true}
       )
 
@@ -135,6 +134,7 @@ const resolvers = {
     unmatch: async (parent, args) => {
       const me = await User.findOne({ _id: args._id })
         .select('-__v -password')
+
       // Create a reference to the pre-existing matches array
       const previousMatches = me.matches
 
@@ -142,12 +142,12 @@ const resolvers = {
       const updatedMatches = me.likes.filter(matchId => me.likedby.includes(matchId));
 
       // Create an array of all pre-existing matches no longer included in the new array
-      const deletedMatches = previousMatches.filter(matchId => !updatedMatches.includes(matchId));
+      let deletedMatches = previousMatches.filter(match => !updatedMatches.toString().includes(match));
 
       const updatedUser = await User.findByIdAndUpdate(
         { _id: args._id }, 
         // Remove all values no longer included in the updatedMatches array
-        { $pullAll: { matches: { $each: deletedMatches } } },
+        { $pullAll: { matches: deletedMatches } },
         { new: true}
       )
 
