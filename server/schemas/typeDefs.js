@@ -51,6 +51,9 @@ const typeDefs = gql`
         like(_id: ID): User
         likedby(_id: ID): User
         match(_id: ID): User
+        unlike(_id: ID): User
+        unlikedby(_id: ID): User
+        unmatch(_id: ID): User
     }
 `;
 

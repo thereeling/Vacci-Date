@@ -14,6 +14,7 @@ const resolvers = {
       }
       throw new AuthenticationError('Not logged in');
     },
+
     all: async (parent) => {
       const userData = await User.find()
       return userData
@@ -23,7 +24,6 @@ const resolvers = {
   Mutation: {
     login: async (parent, { username, password }) => {
       const user = await User.findOne({ username })
-        .select('-__v -password');
 
       if (!user) {
         throw new AuthenticationError('Incorrect credentials');
@@ -38,62 +38,123 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
+
     addUser: async (parent, args) => {
       const user = await User.create(args.input)
-        .select('-__v -password');
       const token = signToken(user);
   
       return { token, user };
     },
+
     deleteUser: async (parent, { _id }) => {
       const userToDelete = await User.findByIdAndDelete(
         { _id: _id },
         { new: false}
       )
-        .select('-__v -password');
+
       if (!userToDelete) {
         throw new AuthenticationError('Could not find a User with this ID!');
       }
+
       return userToDelete;
     },
+
     like: async (parent, args, context) => {
       const updatedUser = await User.findByIdAndUpdate(
         { _id: context.user._id }, 
         { $addToSet: { likes: { _id: args._id } } },
         { new: true}
       )
-        .select('-__v -password')
+
       if(!updatedUser){
         throw new AuthenticationError('Could not find a User with this ID!');
       }
+
       return updatedUser;
     },
+
     likedby: async (parent, args, context) => {
       const updatedUser = await User.findByIdAndUpdate(
         { _id: args._id }, 
         { $addToSet: { likedby: { _id: context.user._id } } },
         { new: true}
       )
-        .select('-__v -password')
+
       if(!updatedUser){
         throw new AuthenticationError('Could not find a User with this ID!');
       }
+
       return updatedUser;
     },
+    
     match: async (parent, args, context) => {
       const me = await User.findOne({ _id: context.user._id })
-        .select('-__v -password')
       
       const matchArray = me.likes.filter(id => me.likedby.includes(id));
       const updatedUser = await User.findByIdAndUpdate(
         { _id: context.user._id }, 
-        { $addToSet: { matches: { $each: matchArray } }
-        },
+        { $addToSet: { matches: { $each: matchArray } } },
         { new: true}
       )
+
       if(!updatedUser){
         throw new AuthenticationError('Could not find a User with this ID!');
       }
+
+      return updatedUser;
+    },
+
+    unlike: async (parent, args, context) => {
+      const updatedUser = await User.findByIdAndUpdate(
+        { _id: context.user._id }, 
+        { $pull: { likes: { _id: args._id } } },
+        { new: true}
+      )
+
+      if(!updatedUser){
+        throw new AuthenticationError('Could not find a User with this ID!');
+      }
+
+      return updatedUser;
+    },
+
+    unlikedby: async (parent, args, context) => {
+      const updatedUser = await User.findByIdAndUpdate(
+        { _id: args._id }, 
+        { $pull: { likedby: { _id: context.user._id } } },
+        { new: true}
+      )
+
+      if(!updatedUser){
+        throw new AuthenticationError('Could not find a User with this ID!');
+      }
+
+      return updatedUser;
+    },
+
+    unmatch: async (parent, args, context) => {
+      const me = await User.findOne({ _id: context.user._id })
+        .select('-__v -password')
+      // Create a reference to the pre-existing matches array
+      const previousMatches = me.matches
+
+      // Create a new array from the intersection of likes and likedby
+      const updatedMatches = me.likes.filter(id => me.likedby.includes(id));
+
+      // Create an array of all pre-existing matches no longer included in the new array
+      const deletedMatches = previousMatches.filter(id => !updatedMatches.includes(id));
+
+      const updatedUser = await User.findByIdAndUpdate(
+        { _id: context.user._id }, 
+        // Remove all values no longer included in the updatedMatches array
+        { $pullAll: { matches: { $each: deletedMatches } } },
+        { new: true}
+      )
+
+      if(!updatedUser){
+        throw new AuthenticationError('Could not find a User with this ID!');
+      }
+      
       return updatedUser;
     },
   }
