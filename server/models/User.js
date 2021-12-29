@@ -83,9 +83,6 @@ const userSchema = new Schema(
         img: {
             type: String,
         },
-        /*
-            How the 'Match/Like' functionality will work:  When you see a User YOU like and you click the 'Like' button, THAT USER's ID get's added to YOUR 'Likes' list.  Also, YOUR User ID will get added to THEIR 'Liked By' list.  Then Mongoose will perform a 'populate' operator that checks YOUR 'Likes' list AND 'Liked By' list to see if there are MATCHING USER ID's.  That User's ID will be added to YOUR matches list.  If you 'Dislike' a User, nothing will happen except a new User appearing on screen (People change their minds <3).
-        */
         likes: [{
             type: Schema.Types.ObjectId,
             ref: 'User',
@@ -96,10 +93,10 @@ const userSchema = new Schema(
             ref: 'User',
             // unique: true
         }],
-        matches: {
+        matches: [{
             type: Schema.Types.ObjectId,
             ref: 'User',
-        }
+        }]
     },
     {
         toJSON: {
@@ -127,8 +124,6 @@ userSchema.methods.isCorrectPassword = async function (password) {
     return bcrypt.compare(password, this.password);
   };
 
-// Try this method for population first
-
 
 // .get(function() {
 //     let matcharr = [];
@@ -148,21 +143,5 @@ userSchema.methods.isCorrectPassword = async function (password) {
 
 
 const User = model('User', userSchema);
-// userSchema.virtual('matches', {
-//     ref: 'User',
-//     localField: 'likes',
-//     foreignField: 'likedby',
-// })
-
-User.aggregate([
-    { $project: { matches: { $setIntersection: ['$likes', '$likedby']}}}
-]).exec(function (err, result, callback){
-        for (let i = 0; i < result.length; i++) {
-            console.log(result[i].matches)
-            User.populate(result[i].matches, {path: `matches`}, callback);
-        }
-    
-});
-
 module.exports = User
 
