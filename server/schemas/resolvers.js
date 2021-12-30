@@ -37,6 +37,7 @@ const resolvers = {
 
       const token = signToken(user);
       return { token, user };
+      // Logout will be handled with front end
     },
 
     addUser: async (parent, args) => {
@@ -46,17 +47,20 @@ const resolvers = {
       return { token, user };
     },
 
-    deleteUser: async (parent, { username }) => {
-      const userToDelete = await User.findOneAndDelete(
-        { username: username },
+    deleteUser: async (parent, args, context) => {
+      const userToDelete = await User.findByIdAndDelete(
+        { _id: context.user._id },
         { new: false}
       )
-
+        
       if (!userToDelete) {
         throw new AuthenticationError('Could not find a User with this username!');
       }
 
       return userToDelete;
+     /*
+      We need to logout, unlike the deleted users ID in other users, unlikedby the deleted users ID in other users, and unmatch with the other users
+     */
     },
 
     like: async (parent, args, context) => {
@@ -86,8 +90,9 @@ const resolvers = {
 
       return updatedUser;
     },
-    
+  
     match: async (parent, args) => {
+      // Maybe use context.user._id
       const me = await User.findOne({ _id: args._id })
       
       const matchArray = me.likes.filter(matchId => me.likedby.includes(matchId));
@@ -132,6 +137,7 @@ const resolvers = {
     },
 
     unmatch: async (parent, args) => {
+      // Maybe use context.user._id
       const me = await User.findOne({ _id: args._id })
         .select('-__v -password')
 
