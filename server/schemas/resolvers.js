@@ -47,20 +47,41 @@ const resolvers = {
       return { token, user };
     },
 
+    updateUser: async (parent, args, context) => {
+        const updatedUser = await User.findByIdAndUpdate(
+          { _id: context.user._id },
+          args.input,
+          { new: true}
+        )
+        if (!updatedUser) {
+          throw new AuthenticationError('Could not find a User with this username!');
+        }
+        return updatedUser
+    },
+
     deleteUser: async (parent, args, context) => {
+      const id = context.user._id;
+      // Update ALL Users and pull the LOGGED IN users ID FROM all Users.  Pulling from ALL fields that the logged in Users ID will be
+      const updateAllUsers = await User.updateMany(
+        {},
+        { $pull: { likes: id, likedby: id, matches: id } },
+      )
+      if(!updateAllUsers){
+        throw new AuthenticationError;
+      }
+
+      // After we removed the logged in Users, we will DELETE the logged in User from the collection.  We want to do this after the updateMany so our context._id is readable
+
       const userToDelete = await User.findByIdAndDelete(
         { _id: context.user._id },
         { new: false}
       )
-        
+
       if (!userToDelete) {
         throw new AuthenticationError('Could not find a User with this username!');
       }
-
-      return userToDelete;
-     /*
-      We need to logout, unlike the deleted users ID in other users, unlikedby the deleted users ID in other users, and unmatch with the other users
-     */
+      // ran into some issues with the return statement, but the mutation works if you query 'all'
+      return updateAllUsers;
     },
 
     like: async (parent, args, context) => {

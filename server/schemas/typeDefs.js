@@ -47,7 +47,8 @@ const typeDefs = gql`
     type Mutation {
         login(username: String!, password: String!): Auth
         addUser(input: UserInput): Auth
-        deleteUser: User
+        deleteUser: Query
+        updateUser(input: UserInput): User
         like(_id: ID): User
         likedby(_id: ID): User
         match(_id: ID): User
@@ -56,5 +57,5 @@ const typeDefs = gql`
         unmatch(_id: ID): User
     }
 `;
-
+// deleteUser Mutation works, just need to find out what we want to return after.
 module.exports = typeDefs;

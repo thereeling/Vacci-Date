@@ -23,7 +23,10 @@ const userSchema = new Schema(
         },
         password: {
             type: String,
+            minlength: 6,
+            maxlength: 12,
             required: true
+            // maybe a match validator???
         },
         age: {
             type: Number,
@@ -33,6 +36,7 @@ const userSchema = new Schema(
         location: {
             type: String,
             required: true
+            // maybe match regex to not include numbers and special characters?
         },
         gender: {
             type: String,
@@ -45,7 +49,6 @@ const userSchema = new Schema(
             enum: ['Men', 'Women', 'No Preference']
         },
        
-        // Number range validator I saw in stackoverflow, will test later
         agerangemin: {
             type: Number,
             min: 18,
@@ -123,23 +126,6 @@ userSchema.pre('save', async function (next) {
 userSchema.methods.isCorrectPassword = async function (password) {
     return bcrypt.compare(password, this.password);
   };
-
-
-// .get(function() {
-//     let matcharr = [];
-//     for (let i = 0; i < likes.length; i++) {
-        
-//         for (let j = 0; j < likedby.length; j++) {
-//             if(likes[i] === likedby[j]){
-//                 matcharr.push(likes[i])
-//             }
-//         }    
-//     }
-//     console.log(matcharr);
-//     return matcharr;
-// })
-
-
 
 
 const User = model('User', userSchema);
