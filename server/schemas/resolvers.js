@@ -80,45 +80,41 @@ const resolvers = {
       if (!userToDelete) {
         throw new AuthenticationError('Could not find a User with this username!');
       }
-      // ran into some issues with the return statement, but the mutation works if you query 'all'
-      return updateAllUsers;
+
+      return {userToDelete, updateAllUsers};
     },
 
     like: async (parent, args, context) => {
-      const updatedUser = await User.findByIdAndUpdate(
+      const loggedInUser = await User.findByIdAndUpdate(
         { _id: context.user._id }, 
         { $addToSet: { likes: { _id: args._id } } },
         { new: true}
       )
 
-      if(!updatedUser){
-        throw new AuthenticationError('Could not find a User with this ID!');
+      if(!loggedInUser){
+        throw new AuthenticationError;
       }
-
-      return updatedUser;
-    },
-
-    likedby: async (parent, args, context) => {
-      const updatedUser = await User.findByIdAndUpdate(
+      const likedUser = await User.findByIdAndUpdate(
         { _id: args._id }, 
         { $addToSet: { likedby: { _id: context.user._id } } },
         { new: true}
       )
-
-      if(!updatedUser){
+      if(!likedUser){
         throw new AuthenticationError('Could not find a User with this ID!');
       }
 
-      return updatedUser;
+      return [loggedInUser, likedUser];
     },
   
-    match: async (parent, args) => {
+    match: async (parent, args, context) => {
       // Maybe use context.user._id
-      const me = await User.findOne({ _id: args._id })
+      const me = await User.findOne({ _id: context.user._id })
       
       const matchArray = me.likes.filter(matchId => me.likedby.includes(matchId));
+
+      
       const updatedUser = await User.findOneAndUpdate(
-        { _id: args._id }, 
+        { _id: context.user._id }, 
         { $addToSet: { matches: { $each: matchArray } } },
         { new: true}
       )
@@ -130,33 +126,25 @@ const resolvers = {
       return updatedUser;
     },
 
-    unlike: async (parent, { _id }, context) => {
-      const updatedUser = await User.findByIdAndUpdate(
+    unlike: async (parent, args, context) => {
+      const loggedInUser = await User.findByIdAndUpdate(
         { _id: context.user._id }, 
-        { $pull: { likes: _id } },
+        { $pull: { likes: args._id } },
         { new: true}
       )
-      if(!updatedUser){
+      if(!loggedInUser){
         throw new AuthenticationError('Could not find a User with this ID!');
       }
-
-      return updatedUser;
-    },
-
-    unlikedby: async (parent, args, context) => {
-      const updatedUser = await User.findByIdAndUpdate(
+      const unlikedUser = await User.findByIdAndUpdate(
         { _id: args._id }, 
         { $pull: { likedby: context.user._id } },
         { new: true}
       )
-
-      if(!updatedUser){
+      if(!unlikedUser){
         throw new AuthenticationError('Could not find a User with this ID!');
       }
-
-      return updatedUser;
+      return [loggedInUser, unlikedUser];
     },
-
     unmatch: async (parent, args) => {
       // Maybe use context.user._id
       const me = await User.findOne({ _id: args._id })
