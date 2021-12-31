@@ -85,15 +85,25 @@ const resolvers = {
     },
 
     like: async (parent, args, context) => {
+      // Find the user from the local storage token & push the user id from the args into the likes array of the loggedIn user
       const loggedInUser = await User.findByIdAndUpdate(
         { _id: context.user._id }, 
         { $addToSet: { likes: { _id: args._id } } },
         { new: true}
       )
-
       if(!loggedInUser){
         throw new AuthenticationError;
       }
+
+      // Check for matches in the loggedIn user; add to matches field
+      const loggedInMatchArray = loggedInUser.likes.filter(matchId => loggedInUser.likedby.includes(matchId));
+      const loggedInUser2 = await User.findByIdAndUpdate(
+        { _id: context.user._id }, 
+        { $addToSet: { matches: { $each: loggedInMatchArray } } },
+        { new: true}
+      )
+
+      // Find the user from the args & push the loggedIn user id into the likedby array of the likedUser
       const likedUser = await User.findByIdAndUpdate(
         { _id: args._id }, 
         { $addToSet: { likedby: { _id: context.user._id } } },
@@ -103,30 +113,19 @@ const resolvers = {
         throw new AuthenticationError('Could not find a User with this ID!');
       }
 
-      return [loggedInUser, likedUser];
-    },
-  
-    match: async (parent, args, context) => {
-      // Maybe use context.user._id
-      const me = await User.findOne({ _id: context.user._id })
-      
-      const matchArray = me.likes.filter(matchId => me.likedby.includes(matchId));
-
-      
-      const updatedUser = await User.findOneAndUpdate(
-        { _id: context.user._id }, 
-        { $addToSet: { matches: { $each: matchArray } } },
+      // Check for matches in the likedUser; add to matches field
+      const likedMatchArray = likedUser.likes.filter(matchId => likedUser.likedby.includes(matchId));
+      const likedUser2 = await User.findByIdAndUpdate(
+        { _id: args._id }, 
+        { $addToSet: { matches: { $each: likedMatchArray } } },
         { new: true}
       )
 
-      if(!updatedUser){
-        throw new AuthenticationError('Could not find a User with this username!');
-      }
-
-      return updatedUser;
+      return [loggedInUser2, likedUser2];
     },
 
     unlike: async (parent, args, context) => {
+      // Find the user from the local storage token & pull the user id from the args from the likes array of the loggedIn user
       const loggedInUser = await User.findByIdAndUpdate(
         { _id: context.user._id }, 
         { $pull: { likes: args._id } },
@@ -135,6 +134,18 @@ const resolvers = {
       if(!loggedInUser){
         throw new AuthenticationError('Could not find a User with this ID!');
       }
+
+      // Check for matches in the loggedIn user; remove broken matches
+      const loggedInPreviousMatches = loggedInUser.matches
+      const loggedInUpdatedMatches = loggedInUser.likes.filter(matchId => loggedInUser.likedby.includes(matchId));
+      let loggedInDeletedMatches = loggedInPreviousMatches.filter(match => !loggedInUpdatedMatches.toString().includes(match));
+      const loggedInUser2 = await User.findByIdAndUpdate(
+        { _id: context.user._id }, 
+        { $pullAll: { matches: loggedInDeletedMatches } },
+        { new: true}
+      )
+
+      // Find the user from the args & pull the loggedIn user id out of the likedby array of the unlikedUser
       const unlikedUser = await User.findByIdAndUpdate(
         { _id: args._id }, 
         { $pull: { likedby: context.user._id } },
@@ -143,35 +154,19 @@ const resolvers = {
       if(!unlikedUser){
         throw new AuthenticationError('Could not find a User with this ID!');
       }
-      return [loggedInUser, unlikedUser];
-    },
-    unmatch: async (parent, args) => {
-      // Maybe use context.user._id
-      const me = await User.findOne({ _id: args._id })
-        .select('-__v -password')
 
-      // Create a reference to the pre-existing matches array
-      const previousMatches = me.matches
-
-      // Create a new array from the intersection of likes and likedby
-      const updatedMatches = me.likes.filter(matchId => me.likedby.includes(matchId));
-
-      // Create an array of all pre-existing matches no longer included in the new array
-      let deletedMatches = previousMatches.filter(match => !updatedMatches.toString().includes(match));
-
-      const updatedUser = await User.findByIdAndUpdate(
+      // Check for matches in the unlikedUser; remove broken matches
+      const unlikedPreviousMatches = unlikedUser.matches
+      const unlikedUpdatedMatches = unlikedUser.likes.filter(matchId => unlikedUser.likedby.includes(matchId));
+      let unlikedDeletedMatches = unlikedPreviousMatches.filter(match => !unlikedUpdatedMatches.toString().includes(match));
+      const unlikedUser2 = await User.findByIdAndUpdate(
         { _id: args._id }, 
-        // Remove all values no longer included in the updatedMatches array
-        { $pullAll: { matches: deletedMatches } },
+        { $pullAll: { matches: unlikedDeletedMatches } },
         { new: true}
       )
 
-      if(!updatedUser){
-        throw new AuthenticationError('Could not find a User with this ID!');
-      }
-      
-      return updatedUser;
-    },
+      return [loggedInUser2, unlikedUser2];
+    }
   }
 };
 
