@@ -1,16 +1,13 @@
+import { useReducer } from "react";
 import {
     UPDATE_MATCHES,
     UPDATE_USERS,
     UPDATE_RECOMMENDED_USER
 } from './actions'
 
-const initialstate = {
-    users: [],
-    matches: [],
-    recommendedUser: ''
-};
 
-export const reducer= (state = initialstate, action) => {
+
+export const reducer= (state, action) => {
     switch (action.type) {
         case UPDATE_MATCHES:
             return {
@@ -30,4 +27,8 @@ export const reducer= (state = initialstate, action) => {
         default:
             return state;
     }
+};
+
+export function useUserReducer(initialState) {
+    return useReducer(reducer, initialState)
 }
