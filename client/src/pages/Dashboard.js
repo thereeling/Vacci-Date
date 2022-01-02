@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Profile = () => {
+const Dashboard = () => {
     return (
         <div className="container">
             
@@ -8,4 +8,4 @@ const Profile = () => {
     );
 };
 
-export default Profile;
+export default Dashboard;
