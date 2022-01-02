@@ -30,21 +30,25 @@ function Login() {
     };
 
     return (
-        <div className="container my-1">
-      <Link to="/signup">Signup Here</Link>
+        <div className="flex font-serif">
+          <div className="flex-none w-52 relative">
+            <Link to="/signup">Signup Here</Link>
+          </div>
 
-      <h2>Login</h2>
-      <form onSubmit={handleFormSubmit}>
-        <div className="flex-row space-between my-2">
-          <label htmlFor="email">Email address:</label>
-          <input
-            placeholder="youremail@test.com"
-            name="email"
-            type="email"
-            id="email"
-            onChange={handleChange}
-          />
-        </div>
+          <form className="flex-auto p-6" onSubmit={handleFormSubmit}>
+            <h2 className="w-full flex-none mb-3 text-xl leading-none text-gray-900">
+              Login
+            </h2>
+            <div className="flex-row space-between my-2">
+              <label htmlFor="email">Email address:</label>
+                <input
+                  placeholder="youremail@test.com"
+                  name="email"
+                  type="email"
+                  id="email"
+                  onChange={handleChange}
+                />
+            </div>
         <div className="flex-row space-between my-2">
           <label htmlFor="pwd">Password:</label>
           <input
