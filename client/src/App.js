@@ -15,6 +15,7 @@ import NotFound from './pages/NotFound';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Nav from './components/Nav';
+import Dashboard from './pages/Dashboard';
 
 // Have to change http link when we deploy
 const httpLink = createHttpLink({
@@ -49,6 +50,7 @@ function App() {
               <Route element={NotFound} />
             </Routes>
           </UserProvider>
+
         </div>
       </Router>
 
