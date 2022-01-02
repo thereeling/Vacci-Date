@@ -39,7 +39,7 @@ function Login() {
             <h2 className="w-full flex-none mb-3 text-xl leading-none text-gray-900">
               Login
             </h2>
-            <div className="flex-row space-between my-2">
+            <div className="flex flex-wrap items-baseline">
               <label htmlFor="email">Email address:</label>
                 <input
                   placeholder="youremail@test.com"
@@ -49,7 +49,7 @@ function Login() {
                   onChange={handleChange}
                 />
             </div>
-        <div className="flex-row space-between my-2">
+        <div className="flex flex-wrap items-baseline">
           <label htmlFor="pwd">Password:</label>
           <input
             placeholder="******"
@@ -61,11 +61,11 @@ function Login() {
         </div>
         {error ? (
           <div>
-            <p className="error-text">The provided credentials are incorrect</p>
+            <p className="text-sm text-gray-500 error-text">The provided credentials are incorrect</p>
           </div>
         ) : null}
-        <div className="flex-row flex-end">
-          <button type="submit">Submit</button>
+        <div className="flex space-x-4 mb-5 text-sm font-medium">
+          <button className="flex-none w-1/2 h-12 uppercase font-medium tracking-wider bg-gray-900 text-white" type="submit">Submit</button>
         </div>
       </form>
     </div>
