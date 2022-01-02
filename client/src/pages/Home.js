@@ -1,30 +1,36 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
+import Auth from '../utils/auth'
 import { QUERY_ALL_USERS, QUERY_USER } from '../utils/queries'
 
 const Home = () => {
-    const useQueryAllUsers = () => {
-        const { data } = useQuery(QUERY_ALL_USERS);
-        let all
-        if(data){
-            all = data.all
+        const { data: allData, error: allError, loading: allLoading } = useQuery(QUERY_ALL_USERS, {
+            pollInterval: 500,
+        });
+        const { data: meData, error: meError, loading: meLoading } = useQuery(QUERY_USER, {
+            pollInterval: 500,
+        });
+        if (allLoading || meLoading) {
+            return <h2>LOADING...</h2>;
+        };
+        let all;
+        let me;
+        if(allData) {
+            all = allData.all;
         }
-        return all;
-    };
-    const useQueryMe = () => {
-        const { data } = useQuery(QUERY_USER);
-        let me
-        if(data){
-            me = data.me
+        if(meData) {
+            me = meData.me
         }
-        return me;
-    };
-    const all = useQueryAllUsers();
-    const me = useQueryMe();
-    console.log(all);
-    console.log(me.preference);
+        console.log(all)
+        console.log(me)
+
+        const filteredUsers = all.filter((user) => {
+            return me.preference === user.preference
+        });
+        console.log(filteredUsers);
     
-    // const filteredUsers = all.filter(user => me.preference);
+    
+    // const filteredUsers = all.filter(user => console.log(user.gender));
     // console.log(filteredUsers);
 
     /*
@@ -33,7 +39,6 @@ const Home = () => {
 
     return (
         <div className="container">
-            
         </div>
     );
 };
