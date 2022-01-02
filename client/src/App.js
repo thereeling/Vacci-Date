@@ -16,7 +16,6 @@ import NotFound from './pages/NotFound';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Nav from './components/Nav';
-import Profile from './pages/Profile';
 import Dashboard from './pages/Dashboard';
 
 const httpLink = createHttpLink({
@@ -49,7 +48,7 @@ function App() {
             <Route exact path="/login" element={Login} />
             <Route exact path="/signup" element={Signup} />
             <Route exact path="/dashboard" element={Dashboard} />
-            <Route exact path="/profile" element={Profile}/>
+            <Route exact path="/profile/:username?" element={Profile}/>
             <Route component={NotFound} />
           </Routes>
         </div>

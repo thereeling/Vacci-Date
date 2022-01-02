@@ -24,7 +24,7 @@ function Nav() {
                         <Link to="/signup">Signup</Link>
                     </li>
                     <li className="mx-1">
-                        <Link to="/Login">Login</Link>
+                        <Link to="/login">Login</Link>
                     </li>
                 </ul>
             );
