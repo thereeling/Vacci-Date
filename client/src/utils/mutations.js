@@ -91,6 +91,5 @@ export const UNLIKE_USER = gql`
             username
         }
     }
-
 `;
 

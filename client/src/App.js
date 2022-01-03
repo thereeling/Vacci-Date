@@ -50,7 +50,6 @@ function App() {
               <Route element={NotFound} />
             </Routes>
           </UserProvider>
-
         </div>
       </Router>
 
