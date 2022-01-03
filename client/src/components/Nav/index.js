@@ -67,7 +67,7 @@ export default function Nav({ fixed }) {
         } else {
             return (
                 <>
-                <div className="flex flex-wrap py-2">
+                <div className="flex flex-wrap w-full py-2">
                     <div className="w-full px-4">
                         <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 bg-pink-500 rounded">
                             <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
