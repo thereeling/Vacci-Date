@@ -21,9 +21,10 @@ const Dashboard = () => {
 
         if(allData && meData){
             const filteredUsers = allData.all.filter((user) => {
+                if(!user.likedby.includes(meData.me._id)){
                 return meData.me.preference === user.gender && user.preference === meData.me.gender 
                 // && meData.me.age >= user.agerangemin && meData.me.age <= user.agerangemax && user.age >= meData.me.agerangemin && user.age <= meData.me.agerangemax
-            });
+            }});
             dispatch({
                 type: FILTERED_USERS,
                 users: filteredUsers
@@ -35,11 +36,13 @@ const Dashboard = () => {
     if (allLoading || meLoading) {
         return <h2>LOADING...</h2>;
     };
-    
+    console.log(state.users);
     const renderUser = () => {
-        if(state.users.length === 0 || !state.users){
-
+        if(!state.users){
             return <h1>LOADING...</h1>
+        }
+        if(state.users.length === 0){
+            return <h1>Sorry! There are no compatible singles for you right now, or you already liked them all!  Please check again later!</h1>
         }
         else{
             console.log(state.users)
@@ -47,6 +50,9 @@ const Dashboard = () => {
                      <h1>{state.users[currentUser].firstname}</h1>
                      <h2>{state.users[currentUser].age}</h2>
                      <h3>{state.users[currentUser].gender}</h3>
+                     <button onClick={handleUserOnYesClick}>YES</button>
+                        <br/>
+                     <button onClick={handleUserOnNoClick}>NOOOOOOO</button>
                    </div>
         }
     };
@@ -80,9 +86,6 @@ const Dashboard = () => {
         
         <div className="container">
             {renderUserVar}
-            <button onClick={handleUserOnYesClick}>YES</button>
-            <br/>
-            <button onClick={handleUserOnNoClick}>NOOOOOOO</button>
         </div>
     );
 };
