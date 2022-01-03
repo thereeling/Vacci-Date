@@ -81,7 +81,7 @@ const resolvers = {
         throw new AuthenticationError('Could not find a User with this username!');
       }
 
-      return {userToDelete, updateAllUsers};
+      return userToDelete;
     },
 
     like: async (parent, args, context) => {

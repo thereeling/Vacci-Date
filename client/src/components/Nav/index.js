@@ -6,7 +6,7 @@ function Nav() {
     function showNavigation() {
         if(Auth.loggedIn()) {
             return (
-                <ul className="flex-row">
+                <ul className="flex flex-row">
                     <li className="mx-1">
                         <Link to ="/matches">My Matches</Link>
                     </li>
@@ -19,12 +19,12 @@ function Nav() {
             );
         } else {
             return (
-                <ul className="flex-row">
+                <ul className="flex flex-row">
                     <li className="mx-1">
                         <Link to="/signup">Signup</Link>
                     </li>
                     <li className="mx-1">
-                        <Link to="/Login">Login</Link>
+                        <Link to="/login">Login</Link>
                     </li>
                 </ul>
             );
@@ -32,8 +32,8 @@ function Nav() {
     }
 
     return (
-        <header className="flex-row px-1">
-            <h1>
+        <header className="flex flex-row px-1">
+            <h1 className="text-5xl">
                 <Link to="/">
                     <span role="img" aria-label="hearts">
                     💘
