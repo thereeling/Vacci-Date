@@ -23,7 +23,10 @@ const userSchema = new Schema(
         },
         password: {
             type: String,
+            minlength: 6,
+            maxlength: 12,
             required: true
+            // maybe a match validator???
         },
         age: {
             type: Number,
@@ -33,6 +36,7 @@ const userSchema = new Schema(
         location: {
             type: String,
             required: true
+            // maybe match regex to not include numbers and special characters?
         },
         gender: {
             type: String,
@@ -44,36 +48,35 @@ const userSchema = new Schema(
             required: true,
             enum: ['Men', 'Women', 'No Preference']
         },
-        agerange: {
-            // Number range validator I saw in stackoverflow, will test later
-            min: {
-                type: Number,
-                min: 18,
-                validate: {
-                    validator: function(val){
-                        const ageMax = this.target.agerange.max;
-                        return (ageMax !== undefined ? val <= ageMax : true);
-                    },
-                    message: 'The MIN range with value {VALUE} must be <= the max range!'
-                }
-            },
-            max: {
-                type: Number,
-                min: 18,
-                validate: {
-                    validator: function(val){
-                        const ageMin = this.target.agerange.min;
-                        return (ageMin !== undefined ? val >= ageMin : true);
-                    },
-                    message: 'The MIN range with value {VALUE} must be >= the min range!'
-                }
-            }
+       
+        agerangemin: {
+            type: Number,
+            min: 18,
+            // validate: {
+            //     validator: function(val){
+            //         const ageMax = this.target.agerangemax;
+            //         return (ageMax !== undefined ? val <= ageMax : true);
+            //     },
+            //     message: 'The MIN range with value {VALUE} must be <= the max range!'
+            // }
         },
+        agerangemax: {
+            type: Number,
+            min: 18,
+            // validate: {
+            //     validator: function(val){
+            //         const ageMin = this.target.agerangemin;
+            //         return (ageMin !== undefined ? val >= ageMin : true);
+            //     },
+            //     message: 'The MIN range with value {VALUE} must be >= the min range!'
+            // }
+        },
+
         // Don't know what to put in hobby list, will bring to groups attention
-        hobbies: [{
+        hobbies: {
             type: String,
-            enum: ['etc..']
-        }],
+            // enum: ['etc..']
+        },
         aboutme: {
             type: String,
             required: true,
@@ -83,20 +86,26 @@ const userSchema = new Schema(
         img: {
             type: String,
         },
-        /*
-            How the 'Match/Like' functionality will work:  When you see a User YOU like and you click the 'Like' button, THAT USER's ID get's added to YOUR 'Likes' list.  Also, YOUR User ID will get added to THEIR 'Liked By' list.  Then Mongoose will perform a 'populate' operator that checks YOUR 'Likes' list AND 'Liked By' list to see if there are MATCHING USER ID's.  That User's ID will be added to YOUR matches list.  If you 'Dislike' a User, nothing will happen except a new User appearing on screen (People change their minds <3).
-        */
         likes: [{
             type: Schema.Types.ObjectId,
-            ref: 'User'
+            ref: 'User',
+            // unique: true
         }],
-        likedby: {
+        likedby: [{
             type: Schema.Types.ObjectId,
-            ref: 'User'
-        }
+            ref: 'User',
+            // unique: true
+        }],
+        matches: [{
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+        }]
     },
     {
         toJSON: {
+            virtuals: true
+        },
+        toObject: {
             virtuals: true
         },
         id: false
@@ -118,16 +127,7 @@ userSchema.methods.isCorrectPassword = async function (password) {
     return bcrypt.compare(password, this.password);
   };
 
-// Try this method for population first
-
-userSchema.virtual('matches', {
-    ref: 'User',
-    localField: 'likes',
-    foreignField: 'likedby'
-});
 
 const User = model('User', userSchema);
-const doc = User.findOne().populate('matches');
-
 module.exports = User
 

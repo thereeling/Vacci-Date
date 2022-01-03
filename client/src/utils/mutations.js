@@ -14,6 +14,7 @@ export const LOGIN = gql`
 export const ADD_USER = gql`
     mutation AddUser($input: UserInput) {
         addUser(input: $input) {
+            token
             user {
                 _id
                 username
@@ -90,4 +91,6 @@ export const UNLIKE_USER = gql`
             username
         }
     }
+
 `;
+
