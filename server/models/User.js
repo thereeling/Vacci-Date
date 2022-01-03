@@ -46,7 +46,7 @@ const userSchema = new Schema(
         preference: {
             type: String,
             required: true,
-            enum: ['Men', 'Women', 'No Preference']
+            enum: ['Male', 'Female', 'Non-binary']
         },
        
         agerangemin: {

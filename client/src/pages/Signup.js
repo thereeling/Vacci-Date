@@ -5,23 +5,24 @@ import Auth from '../utils/auth';
 import { ADD_USER } from '../utils/mutations';
 
 function Signup(props) {
+  // Autofilling form makes the content in each form area undefined? Will check later
     const [formState, setFormState] = useState({ email: '', password: ''});
     const [addUser] = useMutation(ADD_USER);
-
     const handleFormSubmit = async (event) => {
         event.preventDefault();
         const mutationResponse = await addUser({
             variables: {
-                email: formState.email,
+                input: 
+                {email: formState.email,
                 password: formState.password,
-                firstName: formState.firstName,
+                firstname: formState.firstname,
                 username: formState.username,
-                age: formState.age,
+                age: parseInt(formState.age),
                 location: formState.location,
                 gender: formState.gender,
-                preferance: formState.preferance,
-                aboutMe: formState.aboutMe,
-                img: formState.img
+                preference: formState.preference,
+                aboutme: formState.aboutme,
+                img: formState.img}
             },
         });
         const token = mutationResponse.data.addUser.token;
@@ -41,17 +42,15 @@ function Signup(props) {
             <Link to="/login">← Go to Login</Link>
           </div>
   
-        <form className="flex-auto p-6" onSubmit={handleFormSubmit}>
-          <h2 className="w-full flex-none mb-3 text-xl leading-none text-gray-900">
-            Signup
-          </h2>
-          <div className="flex flex-wrap items-baseline">
-            <label htmlFor="firstName">First Name:</label>
+        <h2>Signup</h2>
+        <form onSubmit={handleFormSubmit}>
+          <div className="flex-row space-between my-2">
+            <label htmlFor="firstname">First Name:</label>
             <input
               placeholder="First"
-              name="firstName"
-              type="firstName"
-              id="firstName"
+              name="firstname"
+              type="firstname"
+              id="firstname"
               onChange={handleChange}
             />
           </div>
@@ -75,23 +74,23 @@ function Signup(props) {
               onChange={handleChange}
             />
           </div>
-          <div className="flex flex-wrap items-baseline">
-            <label htmlFor="pwd">Password:</label>
+          <div className="flex-row space-between my-2">
+            <label htmlFor="password">Password:</label>
             <input
               placeholder="******"
               name="password"
               type="password"
-              id="pwd"
+              id="password"
               onChange={handleChange}
             />
           </div>
-          <div className="flex flex-wrap items-baseline">
-            <label htmlFor="userAge">Age:</label>
+          <div className="flex-row space-between my-2">
+            <label htmlFor="age">Age:</label>
             <input
               placeholder="age"
               name="age"
-              type="age"
-              id="userAge"
+              type="number"
+              id="age"
               onChange={handleChange}
             />
           </div>
@@ -115,23 +114,23 @@ function Signup(props) {
               onChange={handleChange}
             />
           </div>
-          <div className="flex flex-wrap items-baseline">
-            <label htmlFor="pref">Preference:</label>
+          <div className="flex-row space-between my-2">
+            <label htmlFor="preference">Preference:</label>
             <input
               placeholder="M/F/Other"
               name="preference"
               type="preference"
-              id="pref"
+              id="preference"
               onChange={handleChange}
             />
           </div>
-          <div className="flex flex-wrap items-baseline">
-            <label htmlFor="about">About Me:</label>
+          <div className="flex-row space-between my-2">
+            <label htmlFor="about-me">About Me:</label>
             <input
               placeholder="Interests/Hobbies/Quirks"
-              name="about"
-              type="about"
-              id="about"
+              name="aboutme"
+              type="text"
+              id="about-me"
               onChange={handleChange}
             />
           </div>

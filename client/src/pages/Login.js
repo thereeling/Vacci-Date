@@ -5,15 +5,16 @@ import { LOGIN } from '../utils/mutations';
 import Auth from '../utils/auth';
 
 function Login() {
-    const [formState, setFormState] = useState({ email: '', password: '' });
+    const [formState, setFormState] = useState({ username: '', password: '' });
     const [login, { error }] = useMutation(LOGIN);
 
     const handleFormSubmit = async (event) => {
         event.preventDefault();
         try {
             const mutationResponse = await login({
-                variables: { email: formState.email, password: formState.password },
+                variables: { username: formState.username, password: formState.password },
             });
+  
             const token = mutationResponse.data.login.token;
             Auth.login(token);
         } catch (e) {
@@ -30,26 +31,22 @@ function Login() {
     };
 
     return (
-        <div className="flex font-serif">
-          <div className="flex-none w-52 relative">
-            <Link to="/signup">Signup Here</Link>
-          </div>
+      <div className="container my-1">
+      <Link to="/signup">Signup Here</Link>
 
-          <form className="flex-auto p-6" onSubmit={handleFormSubmit}>
-            <h2 className="w-full flex-none mb-3 text-xl leading-none text-gray-900">
-              Login
-            </h2>
-            <div className="flex flex-wrap items-baseline">
-              <label htmlFor="email">Email address:</label>
-                <input
-                  placeholder="youremail@test.com"
-                  name="email"
-                  type="email"
-                  id="email"
-                  onChange={handleChange}
-                />
-            </div>
-        <div className="flex flex-wrap items-baseline">
+      <h2>Login</h2>
+      <form onSubmit={handleFormSubmit}>
+        <div className="flex-row space-between my-2">
+          <label htmlFor="username">Username:</label>
+          <input
+            placeholder="Your Username"
+            name="username"
+            type="username"
+            id="username"
+            onChange={handleChange}
+          />
+        </div>
+        <div className="flex-row space-between my-2">
           <label htmlFor="pwd">Password:</label>
           <input
             placeholder="******"
@@ -64,8 +61,10 @@ function Login() {
             <p className="text-sm text-gray-500 error-text">The provided credentials are incorrect</p>
           </div>
         ) : null}
-        <div className="flex space-x-4 mb-5 text-sm font-medium">
-          <button className="flex-none w-1/2 h-12 uppercase font-medium tracking-wider bg-gray-900 text-white" type="submit">Submit</button>
+        <div className="flex-row flex-end">
+          <Link to="/dashboard">
+          <button type="submit">Submit</button>
+          </Link>
         </div>
       </form>
     </div>
