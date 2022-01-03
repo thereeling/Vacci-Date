@@ -36,6 +36,16 @@ function Signup(props) {
             [name]: value,
         });
     };
+
+    // <div className="flex-row space-between my-2"> 
+    // <label htmlFor="vax">By clicking this button I certify that I am vaccinated against COVID-19</label>
+    // <input
+    //   name="vax"
+    //   type="radio"
+    //   id="vax"
+    //   onChange={handleChange}/>
+    // </div>
+
     return (
         <div className="container my-1">
         <Link to="/login">← Go to Login</Link>
@@ -141,6 +151,15 @@ function Signup(props) {
               id="img"
               onChange={handleChange}
             />
+          </div>
+          <div className="flex-row space-between my-2"> 
+            <label htmlFor="vax">By clicking this button I certify that I am vaccinated against COVID-19</label>
+            <input
+              name="vax"
+              type="radio"
+              id="vax"
+              required
+            onChange={handleChange}/>
           </div>
           <div className="flex-row flex-end">
             <button type="submit">Submit</button>
