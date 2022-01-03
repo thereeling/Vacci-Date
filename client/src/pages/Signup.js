@@ -153,7 +153,7 @@ function Signup(props) {
             />
           </div>
           <div className="flex-row space-between my-2"> 
-            <label htmlFor="vax">By clicking this button I certify that I am vaccinated against COVID-19</label>
+            <label htmlFor="vax">By clicking this button I certify that I am vaccinated against COVID-19 </label>
             <input
               name="vax"
               type="radio"
