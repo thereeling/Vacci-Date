@@ -2,13 +2,12 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import {
   ApolloClient,
-  inMemoryCache,
   ApolloProvider,
   createHttpLink,
   InMemoryCache,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-
+import { UserProvider } from './utils/GlobalState'
 
 import Home from './pages/Home';
 import Profile from './pages/Profile';
@@ -16,9 +15,11 @@ import NotFound from './pages/NotFound';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Nav from './components/Nav';
+import Dashboard from './pages/Dashboard';
 
+// Have to change http link when we deploy
 const httpLink = createHttpLink({
-  uri: '/graphql',
+  uri: 'http://localhost:3001/graphql',
 });
 
 const authLink = setContext((_, { headers }) => {
@@ -30,7 +31,6 @@ const authLink = setContext((_, { headers }) => {
     },
   };
 });
-
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
@@ -41,13 +41,15 @@ function App() {
     <ApolloProvider client={client}>
       <Router>
         <div>
-          <Nav />
-          <Routes>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/signup" component={Signup} />
-            <Route component={NotFound} />
-          </Routes>
+          <UserProvider>
+           <Nav />
+            <Routes>
+              <Route exact path="/" element={<Home/>} />
+              <Route exact path="/login" element={<Login/>} />
+              <Route exact path="/signup" element={<Signup/>} />
+              <Route element={NotFound} />
+            </Routes>
+          </UserProvider>
         </div>
       </Router>
 
