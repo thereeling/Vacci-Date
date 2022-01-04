@@ -8,7 +8,9 @@ function Nav() {
             return (
                 <ul className="flex flex-row">
                     <li className="mx-1">
+                        <Link to ="/dashboard">Dashboard</Link>
                         <Link to ="/matches">My Matches</Link>
+                        <Link to ="/profile">Edit Profile</Link>
                     </li>
                     <li className="mx-1">
                         <a href="/" onClick={() => Auth.logout()}>
