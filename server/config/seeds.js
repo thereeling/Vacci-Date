@@ -16,7 +16,7 @@ db.once('open', async () => {
            preference: ['Female'],
            agerangemin: 25,
            agerangemax: 30,
-           aboutme: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eu sem integer vitae justo eget. Pellentesque sit amet porttitor eget dolor morbi non.'
+           aboutme: 'This is a test for testing things'
         },
         {
             username: 'coolgirl',
