@@ -16,7 +16,7 @@ db.once('open', async () => {
            preference: ['Female'],
            agerangemin: 25,
            agerangemax: 30,
-           aboutme: 'This is a test for testing things'
+           aboutme: 'Loves long walks on the Beach, listening to music and living everyday like it is my last!'
         },
         {
             username: 'coolgirl',
@@ -29,7 +29,7 @@ db.once('open', async () => {
             preference: ['Male', 'Female'],
             agerangemin: 24,
             agerangemax: 28,
-            aboutme: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eu sem integer vitae justo eget. Pellentesque sit amet porttitor eget dolor morbi non.'
+            aboutme: 'I love Chelsea FC. There is something about winter and sitting by a fire with a drink in my hand that lets me know this life is worth living.'
          },
          {
             username: 'singlemale1',
@@ -42,7 +42,7 @@ db.once('open', async () => {
             preference:['Female'],
             agerangemin: 50,
             agerangemax: 56,
-            aboutme: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eu sem integer vitae justo eget. Pellentesque sit amet porttitor eget dolor morbi non.'
+            aboutme: 'Propane and propane accessories what everyone wants. I do not have an anger problem, I have an idiot problem!'
          },
          {
             username: 'singlfemale1',
@@ -55,7 +55,7 @@ db.once('open', async () => {
             preference: ['Female', 'Male', 'Non-binary'],
             agerangemin: 30,
             agerangemax: 40,
-            aboutme: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eu sem integer vitae justo eget. Pellentesque sit amet porttitor eget dolor morbi non.'
+            aboutme: 'I like to sit around and read a good book and talk, but sometimes I like to go and play laser tag.'
          },
          {
             username: 'singlenonbi1',
@@ -68,7 +68,7 @@ db.once('open', async () => {
             preference: ['Male', 'Female', 'Non-binary'],
             agerangemin: 30,
             agerangemax: 40,
-            aboutme: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eu sem integer vitae justo eget. Pellentesque sit amet porttitor eget dolor morbi non.'
+            aboutme: 'Sometimes it takes a while for me to come out of my shell, but when I do, its all fun and memories to make.'
          },
          {
             username: 'singlemale2',
@@ -81,7 +81,7 @@ db.once('open', async () => {
             preference: ['Female', 'Male'],
             agerangemin: 30,
             agerangemax: 47,
-            aboutme: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eu sem integer vitae justo eget. Pellentesque sit amet porttitor eget dolor morbi non.'
+            aboutme: 'There are only a few things that can get me excited. Getting to know you and wondering when our next date is going to be. .'
          },
          {
             username: 'singlefemale2',
@@ -94,7 +94,7 @@ db.once('open', async () => {
             preference: ['Male', 'Female'],
             agerangemin: 30,
             agerangemax: 47,
-            aboutme: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eu sem integer vitae justo eget. Pellentesque sit amet porttitor eget dolor morbi non.'
+            aboutme: 'I will not want to speak to the manger when I am around you. I believe in natural remedies to solve all problems. Except COVID. GET VACCINATED!'
          },
          {
             username: 'singlemale3',
@@ -107,7 +107,7 @@ db.once('open', async () => {
             preference: ['Non-binary'],
             agerangemin: 30,
             agerangemax: 47,
-            aboutme: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eu sem integer vitae justo eget. Pellentesque sit amet porttitor eget dolor morbi non.'
+            aboutme: 'Man, hanging by the beach is the best. Surfing and skating are awesome. Let us all just chill a little and just relax man.'
          },
     ])
     console.log('Users seeded!');
