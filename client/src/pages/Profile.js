@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { QUERY_USER } from '../utils/queries';
+import stateNames from '../utils/stateNames';
 
-const Profile = (props) => {
-  const { loading, data, error } = useQuery(QUERY_USER);
+const Profile=(props) => {
+  const { loading, data, error }=useQuery(QUERY_USER);
 
-  const my = data?.me || {};
+  const my=data?.me || {};
   console.log(my);
 
-  const [formState, setFormState] = useState({ email: '', password: ''});
-
-  const handleFormSubmit = async (event) => {
+  const [formState, setFormState]=useState({ email: '', password: ''});
+  const handleFormSubmit=async (event) => {
     event.preventDefault();
   }
   
@@ -19,111 +19,145 @@ const Profile = (props) => {
   }
 
   return (
-    <div className = "container">
-      <h2>Hello, {my.firstname}</h2>
-      <form onSubmit = {handleFormSubmit}>
-        <div className = "flex-row space-between my-2">
-          <label htmlFor = "firstname">First Name:</label>
+    <div className="container max-w-3xl m-auto p-5">
+      <h2 className="text-3xl text-center">Hello, {my.firstname}!</h2>
+      <p className="text-center mb-5">Here, you can update your Vacci-Date Profile.</p>
+      <form onSubmit={handleFormSubmit}>
+        <div className="flex-row space-between my-2">
+          <label className="font-bold mr-2" htmlFor="username">Your Username:</label>
           <input
-            placeholder = {my.firstname}
-            name = "firstname"
-            type = "firstname"
-            id = "firstname"
+            value={my.username}
+            name="username"
+            type="text"
+            id="username"
             // onChange={handleChange}
           />
         </div>
-        <div className = "flex-row space-between my-2">
-          <label htmlFor = "username">Username:</label>
+        <div className="flex-row space-between my-2">
+          <label className="font-bold mr-2" htmlFor="email">Account Email:</label>
           <input
-            placeholder = {my.username}
-            name = "username"
-            type = "username"
-            id = "username"
+            value={my.email}
+            name="email"
+            type="text"
+            id="email"
             // onChange={handleChange}
           />
         </div>
-        <div className = "flex-row space-between my-2">
-          <label htmlFor = "email">Email:</label>
+        <div className="flex-row space-between my-2">
+          <label className="font-bold mr-2" htmlFor="age">Age:</label>
           <input
-            placeholder = "youremail@test.com"
-            name = "email"
-            type = "email"
-            id = "email"
+            value={my.age}
+            name="age"
+            type="number"
+            id="age"
             // onChange={handleChange}
           />
         </div>
-        <div className = "flex-row space-between my-2">
-          <label htmlFor = "password">Password:</label>
-          <input
-            placeholder = "******"
-            name = "password"
-            type = "password"
-            id = "password"
+        <div className="flex-row space-between my-2">
+          <label className="font-bold mr-1" htmlFor="location">Location:</label>
+          <select
+            defaultValue={my.location}
+            name="location"
+            id="location"
+            // onChange={handleChange}
+          >
+            {stateNames.map(state => <option value={state}>{state}</option>)}
+          </select>
+        </div>
+        <div className="flex-row space-between my-2">
+          <label className="font-bold mr-2" htmlFor="gender">Gender:</label>
+          <select 
+            id="gender"
+            name="gender"
+            defaultValue={my.gender}
+            // onChange={handleChange}
+          >
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Non-binary">Non-binary</option>
+          </select>
+        </div>
+        <p className="font-bold mr-2 " htmlFor="preference">Preferences:</p>
+        <div>
+          <div className="flex-row space-between my-2 flex flex-row ml-5">
+            <div className="mr-3">
+              {/* {my.preference.includes("Male") ?  */}
+              <input
+                type="checkbox"
+                id="Male"
+                name="Male"
+                // onChange={handleChange}
+              /> 
+              {/* : } */}
+              <label for="Male" className="ml-1">Male</label>
+            </div>
+            <div className="mr-3">
+              <input
+                type="checkbox"
+                id="Female"
+                name="Female"
+                // onChange={handleChange}
+              />
+              <label for="Female" className="ml-1">Female</label>
+            </div>
+            <div className="mr-3">
+              <input
+                type="checkbox"
+                id="Non-binary"
+                name="Non-binary"
+                // onChange={handleChange}
+              />
+              <label for="Non-binary" className="ml-1">Non-binary</label>
+            </div>
+          </div>
+          <div className="flex-row space-between my-2 flex flex-row ml-5">
+            <div className="flex-row space-between mr-3">
+              <label className="mr-1" htmlFor="agerangemin">Minimum Age:</label>
+              <input
+                defaultValue={my.agerangemin}
+                name="agerangemin"
+                type="number"
+                id="about-me"
+                className="font-bold w-11"
+                // onChange={handleChange}
+              />
+            </div>
+            <div className="flex-row space-between">
+              <label className="mr-1" htmlFor="agerangemin">Maximum Age:</label>
+              <input
+                defaultValue={my.agerangemax}
+                name="agerangemin"
+                type="number"
+                id="about-me"
+                className="font-bold w-11"
+                // onChange={handleChange}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="my-2">
+          <label className="font-bold mr-2" htmlFor="about-me">About Me:</label>
+          <textarea
+            value={my.aboutme}
+            name="aboutme"
+            type="textarea"
+            id="about-me"
+            className="block w-full my-2 mx-5"
             // onChange={handleChange}
           />
         </div>
-        <div className = "flex-row space-between my-2">
-          <label htmlFor = "age">Age:</label>
+        <div className="flex-row space-between my-2">
+          <label className="font-bold mr-2" htmlFor="img">Upload:</label>
           <input
-            placeholder = "age"
-            name = "age"
-            type = "number"
-            id = "age"
+            placeholder="img"
+            name="img"
+            type="img"
+            id="img"
             // onChange={handleChange}
           />
         </div>
-        <div className = "flex-row space-between my-2">
-          <label htmlFor = "location">Location:</label>
-          <input
-            placeholder = "Anywhere, USA"
-            name = "location"
-            type = "location"
-            id = "location"
-            // onChange={handleChange}
-          />
-        </div>
-        <div className = "flex-row space-between my-2">
-          <label htmlFor = "gender">Gender:</label>
-          <input
-            placeholder = "M/F/Other"
-            name = "gender"
-            type = "gender"
-            id = "gender"
-            // onChange={handleChange}
-          />
-        </div>
-        <div className = "flex-row space-between my-2">
-          <label htmlFor = "preference">Preference:</label>
-          <input
-            placeholder = "M/F/Other"
-            name = "preference"
-            type = "preference"
-            id = "preference"
-            // onChange={handleChange}
-          />
-        </div>
-        <div className = "flex-row space-between my-2">
-          <label htmlFor = "about-me">About Me:</label>
-          <input
-            placeholder = "Interests/Hobbies/Quirks"
-            name = "aboutme"
-            type = "text"
-            id = "about-me"
-            // onChange={handleChange}
-          />
-        </div>
-        <div className = "flex-row space-between my-2">
-          <label htmlFor = "img">Upload:</label>
-          <input
-            placeholder = "img"
-            name = "img"
-            type = "img"
-            id = "img"
-            // onChange={handleChange}
-          />
-        </div>
-        <div className = "flex-row flex-end">
-          <button type = "submit">Submit</button>
+        <div className="flex justify-center">
+          <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
         </div>
       </form>
     </div>
