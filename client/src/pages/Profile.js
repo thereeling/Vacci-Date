@@ -79,35 +79,61 @@ const Profile=(props) => {
         </div>
         <p className="font-bold mr-2 " htmlFor="preference">Preferences:</p>
         <div>
+          {/* Need to conditionally render gender preferences */}
           <div className="flex-row space-between my-2 flex flex-row ml-5">
             <div className="mr-3">
-              {/* {my.preference.includes("Male") ?  */}
-              <input
-                type="checkbox"
-                id="Male"
-                name="Male"
+              {my.preference.includes("Male") ? 
+                <input
+                  type="checkbox"
+                  id="Male"
+                  name="Male"
+                  checked
+                  // onChange={handleChange}
+                /> 
+                : 
+                <input
+                  type="checkbox"
+                  id="Male"
+                  name="Male"
                 // onChange={handleChange}
-              /> 
-              {/* : } */}
-              <label for="Male" className="ml-1">Male</label>
+              />}
+              <label for="Male" className="ml-1">Men</label>
             </div>
             <div className="mr-3">
-              <input
-                type="checkbox"
-                id="Female"
-                name="Female"
+              {my.preference.includes("Female") ? 
+                <input
+                  type="checkbox"
+                  id="Female"
+                  name="Female"
+                  checked
+                  // onChange={handleChange}
+                /> 
+                : 
+                <input
+                  type="checkbox"
+                  id="Female"
+                  name="Female"
                 // onChange={handleChange}
-              />
-              <label for="Female" className="ml-1">Female</label>
+              />}
+              <label for="Female" className="ml-1">Women</label>
             </div>
             <div className="mr-3">
-              <input
-                type="checkbox"
-                id="Non-binary"
-                name="Non-binary"
+            {my.preference.includes("Non-binary") ? 
+                <input
+                  type="checkbox"
+                  id="Non-binary"
+                  name="Non-binary"
+                  checked
+                  // onChange={handleChange}
+                /> 
+                : 
+                <input
+                  type="checkbox"
+                  id="Non-binary"
+                  name="Non-binary"
                 // onChange={handleChange}
-              />
-              <label for="Non-binary" className="ml-1">Non-binary</label>
+              />}
+              <label for="Non-binary" className="ml-1">Non-binary Folks</label>
             </div>
           </div>
           <div className="flex-row space-between my-2 flex flex-row ml-5">
