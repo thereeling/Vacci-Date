@@ -74,11 +74,8 @@ const Dashboard = () => {
             if(prev === state.users.length - 1 && state.users.length !== 0) {
               return  0
             }
-            if(state.users.length === 0){
-                return 
-            }
             else {
-                return prev + 1;
+                return prev;
             }
         });
     };
