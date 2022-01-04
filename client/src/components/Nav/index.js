@@ -86,14 +86,8 @@ export default function Nav({ fixed }) {
                                         <i className="fas fa-bars"></i>
                                     </button>
                                 </div>
-                                <div
-                                    className={
-                                        "lg:flex flex-grow items-center" +
-                                        (menuOpen ? " flex" : " hidden")
-                                    }
-                                    id="example-navbar-info"
-                                >
-                                    <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">
+                                <div className="w-full relative flex justify-between lg:w-auto px-4 lg:static lg:block lg:justify-end">
+                                    <ul className="flex flex-col">
                                         <li className="nav-item">
                                             <a
                                                 className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
