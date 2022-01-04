@@ -1,5 +1,6 @@
 const db = require('./connection');
 const { User } = require('../models');
+const bcrypt = require('bcrypt');
 
 db.once('open', async () => {
     await User.deleteMany();
@@ -12,10 +13,9 @@ db.once('open', async () => {
            age: 27,
            location: 'CT',
            gender: 'Male',
-           preference: 'Female',
+           preference: ['Female'],
            agerangemin: 25,
            agerangemax: 30,
-           hobbies: 'stuff',
            aboutme: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eu sem integer vitae justo eget. Pellentesque sit amet porttitor eget dolor morbi non.'
         },
         {
@@ -26,10 +26,9 @@ db.once('open', async () => {
             age: 22,
             location: 'CT',
             gender: 'Female',
-            preference: 'Male',
+            preference: ['Male', 'Female'],
             agerangemin: 24,
             agerangemax: 28,
-            hobbies: 'stuff',
             aboutme: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eu sem integer vitae justo eget. Pellentesque sit amet porttitor eget dolor morbi non.'
          },
          {
@@ -40,10 +39,9 @@ db.once('open', async () => {
             age: 55,
             location: 'CT',
             gender: 'Male',
-            preference: 'Female',
+            preference:['Female'],
             agerangemin: 50,
             agerangemax: 56,
-            hobbies: 'stuff',
             aboutme: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eu sem integer vitae justo eget. Pellentesque sit amet porttitor eget dolor morbi non.'
          },
          {
@@ -54,10 +52,9 @@ db.once('open', async () => {
             age: 34,
             location: 'CT',
             gender: 'Female',
-            preference: 'Female',
+            preference: ['Female', 'Male', 'Non-binary'],
             agerangemin: 30,
             agerangemax: 40,
-            hobbies: 'stuff',
             aboutme: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eu sem integer vitae justo eget. Pellentesque sit amet porttitor eget dolor morbi non.'
          },
          {
@@ -68,10 +65,9 @@ db.once('open', async () => {
             age: 29,
             location: 'CT',
             gender: 'Non-binary',
-            preference: 'Male',
+            preference: ['Male', 'Female', 'Non-binary'],
             agerangemin: 30,
             agerangemax: 40,
-            hobbies: 'stuff',
             aboutme: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eu sem integer vitae justo eget. Pellentesque sit amet porttitor eget dolor morbi non.'
          },
          {
@@ -82,10 +78,9 @@ db.once('open', async () => {
             age: 45,
             location: 'CT',
             gender: 'Male',
-            preference: 'Female',
+            preference: ['Female', 'Male'],
             agerangemin: 30,
             agerangemax: 47,
-            hobbies: 'stuff',
             aboutme: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eu sem integer vitae justo eget. Pellentesque sit amet porttitor eget dolor morbi non.'
          },
          {
@@ -96,10 +91,9 @@ db.once('open', async () => {
             age: 58,
             location: 'CT',
             gender: 'Female',
-            preference: 'Male',
+            preference: ['Male', 'Female'],
             agerangemin: 30,
             agerangemax: 47,
-            hobbies: 'stuff',
             aboutme: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eu sem integer vitae justo eget. Pellentesque sit amet porttitor eget dolor morbi non.'
          },
          {
@@ -110,10 +104,9 @@ db.once('open', async () => {
             age: 38,
             location: 'CT',
             gender: 'Male',
-            preference: 'Non-binary',
+            preference: ['Non-binary'],
             agerangemin: 30,
             agerangemax: 47,
-            hobbies: 'stuff',
             aboutme: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eu sem integer vitae justo eget. Pellentesque sit amet porttitor eget dolor morbi non.'
          },
     ])

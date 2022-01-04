@@ -43,11 +43,11 @@ const userSchema = new Schema(
             required: true,
             enum: ['Male', 'Female', 'Non-binary']
         },
-        preference: {
+        preference: [{
             type: String,
             required: true,
             enum: ['Male', 'Female', 'Non-binary']
-        },
+        }],
        
         agerangemin: {
             type: Number,
@@ -70,12 +70,6 @@ const userSchema = new Schema(
             //     },
             //     message: 'The MIN range with value {VALUE} must be >= the min range!'
             // }
-        },
-
-        // Don't know what to put in hobby list, will bring to groups attention
-        hobbies: {
-            type: String,
-            // enum: ['etc..']
         },
         aboutme: {
             type: String,
