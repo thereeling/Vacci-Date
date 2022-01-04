@@ -37,8 +37,10 @@ function Signup(props) {
         });
     };
     return (
-        <div className="container my-1">
-        <Link to="/login">← Go to Login</Link>
+        <div className="flex font-serif">
+          <div className="flex-none w-52 relative">
+            <Link to="/login">← Go to Login</Link>
+          </div>
   
         <h2>Signup</h2>
         <form onSubmit={handleFormSubmit}>
@@ -52,7 +54,7 @@ function Signup(props) {
               onChange={handleChange}
             />
           </div>
-          <div className="flex-row space-between my-2">
+          <div className="flex flex-wrap items-baseline">
             <label htmlFor="username">Username:</label>
             <input
               placeholder="username"
@@ -62,7 +64,7 @@ function Signup(props) {
               onChange={handleChange}
             />
           </div>
-          <div className="flex-row space-between my-2">
+          <div className="flex flex-wrap items-baseline">
             <label htmlFor="email">Email:</label>
             <input
               placeholder="youremail@test.com"
@@ -92,7 +94,7 @@ function Signup(props) {
               onChange={handleChange}
             />
           </div>
-          <div className="flex-row space-between my-2">
+          <div className="flex flex-wrap items-baseline">
             <label htmlFor="location">Location:</label>
             <input
               placeholder="Anywhere, USA"
@@ -102,7 +104,7 @@ function Signup(props) {
               onChange={handleChange}
             />
           </div>
-          <div className="flex-row space-between my-2">
+          <div className="flex flex-wrap items-baseline">
             <label htmlFor="gender">Gender:</label>
             <input
               placeholder="M/F/Other"
@@ -132,7 +134,7 @@ function Signup(props) {
               onChange={handleChange}
             />
           </div>
-          <div className="flex-row space-between my-2">
+          <div className="flex flex-wrap items-baseline">
             <label htmlFor="img">Upload:</label>
             <input
               placeholder="img"
@@ -142,8 +144,8 @@ function Signup(props) {
               onChange={handleChange}
             />
           </div>
-          <div className="flex-row flex-end">
-            <button type="submit">Submit</button>
+          <div className="flex space-x-4 mb-5 text-sm font-medium">
+            <button className="flex-none w-1/2 h-12 uppercase font-medium tracking-wider bg-gray-900 text-white" type="submit">Submit</button>
           </div>
         </form>
       </div>
