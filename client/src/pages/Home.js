@@ -7,8 +7,10 @@ const Home = () => {
         <div className="flex items-center justify-around">
             <div className="grid grid-cols-1 md: grid-cols-2 lg:grid-cols-4 gap-y-3 gap-x-2">
             <div className="col-span-2 p-4">
-            <p className="w-1/4 flex flex-col absolute justify-center items-center text-6xl font-bold text-white pt-5 px-40 md: pt-10 px-10 lg:pt-20 px-6">
-                    Where vaccinated singles meet. Safely.
+            <p className="w-1/2 flex flex-col absolute justify-center items-center text-6xl font-bold text-white pt-5 pl-20 md:pt-10 md:pl-20 lg:pt-4 lg:pl-5">
+                    Where vaccinated singles meet. 
+                    <br></br>
+                    Safely.
                 </p>
                 <img className="rounded h-auto w-full" src="./images/disco-love.png" alt="couple laying with disco ball"></img>
             </div>

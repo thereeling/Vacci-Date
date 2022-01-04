@@ -13,7 +13,7 @@ export default function Nav({ fixed }) {
                             <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
                                 <div className="w-full relative flex justify-between lg:w-auto px-4 lg:static lg:block lg:justify-start">
                                     <a
-                                        className="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-white"
+                                        className="text-xl font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-white"
                                         href="/"
                                     >
                                         Vacci-Date
@@ -36,21 +36,21 @@ export default function Nav({ fixed }) {
                                     <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">
                                         <li className="nav-item">
                                             <a
-                                                className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
+                                                className="px-3 py-2 flex items-center text-xl uppercase font-bold leading-snug text-white hover:opacity-75"
                                             >
                                                 <Link to ="/matches">My Matches</Link>
                                             </a>  
                                         </li>
                                         <li className="nav-item">
                                             <a
-                                                className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
+                                                className="px-3 py-2 flex items-center text-xl uppercase font-bold leading-snug text-white hover:opacity-75"
                                             >
                                                 <Link to="/dashboard">Dashboard</Link>
                                             </a>
                                         </li>
                                         <li className="nav-item">
                                             <a
-                                                className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
+                                                className="px-3 py-2 flex items-center text-xl uppercase font-bold leading-snug text-white hover:opacity-75"
                                                 href="/" onClick={() => Auth.logout()}
                                             > 
                                                 Logout
@@ -73,7 +73,7 @@ export default function Nav({ fixed }) {
                             <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
                                 <div className="w-full relative flex justify-between lg:w-auto px-4 lg:static lg:block lg:justify-start">
                                     <a
-                                        className="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-white"
+                                        className="text-xl font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-white"
                                         href="/"
                                     >
                                         Vacci-Date
@@ -90,7 +90,7 @@ export default function Nav({ fixed }) {
                                     <ul className="flex flex-col">
                                         <li className="nav-item">
                                             <a
-                                                className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75"
+                                                className="px-3 py-2 flex items-center text-xl uppercase font-bold leading-snug text-white hover:opacity-75"
                                             >
                                                 <Link to="/login">Login</Link>
                                             </a>
