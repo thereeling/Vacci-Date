@@ -36,9 +36,21 @@ function Signup(props) {
             [name]: value,
         });
     };
+
+    // <div className="flex-row space-between my-2"> 
+    // <label htmlFor="vax">By clicking this button I certify that I am vaccinated against COVID-19</label>
+    // <input
+    //   name="vax"
+    //   type="radio"
+    //   id="vax"
+    //   onChange={handleChange}/>
+    // </div>
+
     return (
-        <div className="container my-1">
-        <Link to="/login">← Go to Login</Link>
+        <div className="flex font-serif">
+          <div className="flex-none w-52 relative">
+            <Link to="/login">← Go to Login</Link>
+          </div>
   
         <h2>Signup</h2>
         <form onSubmit={handleFormSubmit}>
@@ -52,7 +64,7 @@ function Signup(props) {
               onChange={handleChange}
             />
           </div>
-          <div className="flex-row space-between my-2">
+          <div className="flex flex-wrap items-baseline">
             <label htmlFor="username">Username:</label>
             <input
               placeholder="username"
@@ -62,7 +74,7 @@ function Signup(props) {
               onChange={handleChange}
             />
           </div>
-          <div className="flex-row space-between my-2">
+          <div className="flex flex-wrap items-baseline">
             <label htmlFor="email">Email:</label>
             <input
               placeholder="youremail@test.com"
@@ -92,7 +104,7 @@ function Signup(props) {
               onChange={handleChange}
             />
           </div>
-          <div className="flex-row space-between my-2">
+          <div className="flex flex-wrap items-baseline">
             <label htmlFor="location">Location:</label>
             <input
               placeholder="Anywhere, USA"
@@ -102,7 +114,7 @@ function Signup(props) {
               onChange={handleChange}
             />
           </div>
-          <div className="flex-row space-between my-2">
+          <div className="flex flex-wrap items-baseline">
             <label htmlFor="gender">Gender:</label>
             <input
               placeholder="M/F/Other"
@@ -132,7 +144,7 @@ function Signup(props) {
               onChange={handleChange}
             />
           </div>
-          <div className="flex-row space-between my-2">
+          <div className="flex flex-wrap items-baseline">
             <label htmlFor="img">Upload:</label>
             <input
               placeholder="img"
@@ -142,8 +154,18 @@ function Signup(props) {
               onChange={handleChange}
             />
           </div>
+          <div className="flex-row space-between my-2"> 
+            <label htmlFor="vax">By clicking this button I certify that I am vaccinated against COVID-19 </label>
+            <input
+              name="vax"
+              type="radio"
+              id="vax"
+              required
+            onChange={handleChange}/>
+          </div>
           <div className="flex-row flex-end">
             <button type="submit">Submit</button>
+
           </div>
         </form>
       </div>
