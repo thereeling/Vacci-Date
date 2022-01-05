@@ -4,7 +4,6 @@ import { useUserContext } from '../utils/GlobalState';
 import { QUERY_ALL_USERS, QUERY_USER } from '../utils/queries';
 import { LIKE_USER } from '../utils/mutations'
 import { FILTERED_USERS } from '../utils/actions';
-import { selectionSetMatchesResult } from '@apollo/client/cache/inmemory/helpers';
 
 const Dashboard = () => {
     const [currentUser, setCurrentUser] = useState(0);
@@ -18,8 +17,6 @@ const Dashboard = () => {
         pollInterval: 500,
     });
     const [onLikeHandler, {data, loading, error}] = useMutation(LIKE_USER);
-
-
 
     useEffect(() => {
         if(allData && meData){
@@ -40,56 +37,56 @@ const Dashboard = () => {
         }  
     }, [meLoading, allLoading, dispatch])
 
-    // useEffect(() => {
-    //     setCurrentUser(state.users.length)
-    // }, [state.users.length])
 
     if (allLoading || meLoading) {
         return <h2>LOADING...</h2>;
     };
 
 
+
     const handleUserOnYesClick = () => {
         onLikeHandler({variables: {_id: state.users[currentUser]._id}});
-        if(allData && meData){
-            const filteredUsers = allData.all.filter((user) => {
-                if(!user.likedby.includes(meData.me._id) && user._id !== meData.me._id){
-                return meData.me.preference.includes(user.gender) 
-                && user.preference.includes(meData.me.gender)
-                && meData.me.age >= user.agerangemin
-                && meData.me.age <= user.agerangemax 
-                && user.age >= meData.me.agerangemin 
-                && user.age <= meData.me.agerangemax
-            }});
+        // if(allData && meData){
+        //     const filteredUsers = allData.all.filter((user) => {
+        //         if(!user.likedby.includes(meData.me._id) && user._id !== meData.me._id){
+        //         return meData.me.preference.includes(user.gender) 
+        //         && user.preference.includes(meData.me.gender)
+        //         && meData.me.age >= user.agerangemin
+        //         && meData.me.age <= user.agerangemax 
+        //         && user.age >= meData.me.agerangemin 
+        //         && user.age <= meData.me.agerangemax
+        //     }});
             
-            dispatch({
-                type: FILTERED_USERS,
-                users: filteredUsers
-            });
-            
-        }  
-        console.log(state.users); 
+        //     dispatch({
+        //         type: FILTERED_USERS,
+        //         users: filteredUsers
+        //     });
+        // }  
+        // console.log(state.users); 
         setCurrentUser(prev => {
             console.log(state.users.length);
-            if(prev === state.users.length - 1 && state.users.length !== 0) {
-              return  0
-            }
-            else {
-                return prev;
-            }
-        });
-    };
-
-    const handleUserOnNoClick = () => {
-        setCurrentUser(prev => { 
             if(prev === state.users.length - 1) {
-                return 0
+              return  window.location.reload(false);
             }
             else {
                 return prev + 1;
             }
         });
     };
+
+    const handleUserOnNoClick = () => {
+        
+
+        setCurrentUser(prev => { 
+            if(prev === state.users.length - 1) {
+                return window.location.reload(false);
+            }
+            else {
+                return prev + 1;
+            }
+        });
+    };
+  
     const renderUser = () => {
         if(!state.users){
             return <h1>LOADING...</h1>
@@ -98,7 +95,7 @@ const Dashboard = () => {
             return <h1>Sorry! There are no compatible singles for you right now, or you already liked them all!  Please check again later!</h1>
         }
         else{
-            console.log(currentUser)
+            console.log(currentUser);
             return <div className="max-w-sm rounded overflow-hidden shadow-lg">
             <img className="w-full" src={state.users[currentUser].img} alt="User Profile picture"/>
             <div className="px-6 py-4">
@@ -112,6 +109,7 @@ const Dashboard = () => {
             <button onClick={handleUserOnNoClick} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 w-1/3 rounded">
                 No Thanks!
             </button>
+            
             <button onClick={handleUserOnYesClick} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 w-1/3 rounded">
                 Yes!
             </button>

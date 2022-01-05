@@ -17,6 +17,7 @@ const typeDefs = gql`
         likes: [String]
         likedby: [String]
         matches: [String]
+        img: String
     }
 
     type Auth {
@@ -42,6 +43,7 @@ const typeDefs = gql`
         agerangemax: Int
         hobbies: String
         aboutme: String
+        img: String
     }
 
     type Mutation {
