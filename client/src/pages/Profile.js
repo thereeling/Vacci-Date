@@ -78,8 +78,8 @@ const Profile=(props) => {
           </select>
         </div>
         <p className="font-bold mr-2 " htmlFor="preference">Preferences:</p>
+        {/* At the moment, you cannot uncheck what is pre-checked! :-O */}
         <div>
-          {/* Need to conditionally render gender preferences */}
           <div className="flex-row space-between my-2 flex flex-row ml-5">
             <div className="mr-3">
               {my.preference.includes("Male") ? 
@@ -173,7 +173,7 @@ const Profile=(props) => {
           />
         </div>
         <div className="flex-row space-between my-2">
-          <label className="font-bold mr-2" htmlFor="img">Upload:</label>
+          <label className="font-bold mr-2" htmlFor="img">Avatar Selection:</label>
           <input
             placeholder="img"
             name="img"
