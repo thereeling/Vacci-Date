@@ -92,8 +92,8 @@ function Login() {
         </div>
       </form>
     </div>
-    </div>
-    );
+  </div>
+);
 }
 
 export default Login;
