@@ -36,6 +36,16 @@ function Signup(props) {
             [name]: value,
         });
     };
+
+    // <div className="flex-row space-between my-2"> 
+    // <label htmlFor="vax">By clicking this button I certify that I am vaccinated against COVID-19</label>
+    // <input
+    //   name="vax"
+    //   type="radio"
+    //   id="vax"
+    //   onChange={handleChange}/>
+    // </div>
+
     return (
         <div className="flex font-serif">
           <div className="flex-none w-52 relative">
@@ -144,8 +154,18 @@ function Signup(props) {
               onChange={handleChange}
             />
           </div>
-          <div className="flex space-x-4 mb-5 text-sm font-medium">
-            <button className="flex-none w-1/2 h-12 uppercase font-medium tracking-wider bg-gray-900 text-white" type="submit">Submit</button>
+          <div className="flex-row space-between my-2"> 
+            <label htmlFor="vax">By clicking this button I certify that I am vaccinated against COVID-19 </label>
+            <input
+              name="vax"
+              type="radio"
+              id="vax"
+              required
+            onChange={handleChange}/>
+          </div>
+          <div className="flex-row flex-end">
+            <button type="submit">Submit</button>
+
           </div>
         </form>
       </div>
