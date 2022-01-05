@@ -1,7 +1,7 @@
 import { useReducer } from "react";
 import {
     UPDATE_MATCHES,
-    UPDATE_USERS,
+    FILTERED_USERS,
     UPDATE_RECOMMENDED_USER
 } from './actions'
 
@@ -14,7 +14,7 @@ export const reducer= (state, action) => {
                 ...state,
                 matches: [...action.matches]
             };
-        case UPDATE_USERS:
+        case FILTERED_USERS:
             return {
                 ...state,
                 users: [...action.users]

@@ -48,6 +48,7 @@ function App() {
               <Route exact path="/login" element={<Login/>} />
               <Route exact path="/signup" element={<Signup/>} />
               <Route exact path="/profile" element={<Profile/>} />
+              <Route exact path="/dashboard" element={<Dashboard/>}/>
               <Route element={NotFound} />
             </Routes>
           </UserProvider>
