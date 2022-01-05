@@ -1,55 +1,131 @@
 import React, { useState } from 'react';
+import { useMutation } from '@apollo/client';
+import { UPDATE_USER } from '../utils/mutations';
+import stateNames from '../utils/stateNames';
+import genderOptions from '../utils/genderOptions';
+
 import { useQuery } from '@apollo/client';
 import { QUERY_USER } from '../utils/queries';
-import stateNames from '../utils/stateNames';
 
-const Profile=(props) => {
-  const { loading, data, error }=useQuery(QUERY_USER);
+const Profile = () => {
+  const [formState, setFormState] = useState();
+  const [updateUser] = useMutation(UPDATE_USER);
 
-  const my=data?.me || {};
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
+    if (formState.agerangemax < formState.agerangemin) {
+      return alert('Your minimum age is higher than your minimum age!')
+    }
+    await updateUser({
+      variables: {
+        input:
+        {
+          email: formState.email || my.email,
+          username: formState.username || my.username,
+          password: formState.password || my.password,
+          firstname: formState.firstname || my.firstname,
+          gender: formState.gender || my.gender,
+          age: parseInt(formState.age) || parseInt(my.age),
+          location: formState.location || my.location,
+          preference: formState.preference || my.preference,
+          agerangemin: parseInt(formState.agerangemin) || parseInt(my.agerangemin),
+          agerangemax: parseInt(formState.agerangemax) || parseInt(my.agerangemax),
+          aboutme: formState.aboutme
+        }
+      },
+    });
+    alert('Your profile has been successfully updated!')
+    window.location.assign('/dashboard');
+  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormState({
+      ...formState,
+      [name]: value,
+    });
+  };
+  
+  const { data, error } = useQuery(QUERY_USER);
+  const my = data?.me || {};
   console.log(my);
 
-  const [formState, setFormState]=useState({ email: '', password: ''});
-  const handleFormSubmit=async (event) => {
-    event.preventDefault();
-  }
+  // We need to set checkedState based on the queried preferences
+  const genderState = genderOptions.map(function(gender) {
+    if (my.preference.includes(gender)) {
+      return true
+    } else {
+      return false
+    }
+  });
   
-  if (loading) {
-    return <div>Loading...</div>;
+  const [checkedState, setCheckedState] = useState(genderState);
+
+  const handleGenderClick = (position) => {
+    const updatedCheckedState = checkedState.map((item, index) =>
+      index === position ? !item : item
+    );
+
+    setCheckedState(updatedCheckedState);
+
+    const initialGenderArr = updatedCheckedState.map((item, index) => {
+      if (item === true) {
+        return genderOptions[index]
+      }
+    });
+    const genderArray = initialGenderArr.filter(item => item !== undefined)
+
+    setFormState({
+      ...formState,
+      preference: genderArray,
+    });
+    console.log('genderState:')
+    console.log(genderState)
+    console.log('checkedState:')
+    console.log(checkedState)
+    console.log('updatedCheckedState:')
+    console.log(updatedCheckedState)
+    console.log('initialGenderArr:')
+    console.log(initialGenderArr)
+    console.log('genderArray:')
+    console.log(genderArray)
   }
 
   return (
     <div className="container max-w-3xl m-auto p-5">
       <h2 className="text-3xl text-center">Hello, {my.firstname}!</h2>
       <p className="text-center mb-5">Here, you can update your Vacci-Date Profile.</p>
+
       <form onSubmit={handleFormSubmit}>
         <div className="flex-row space-between my-2">
           <label className="font-bold mr-2" htmlFor="username">Your Username:</label>
           <input
-            value={my.username}
+            defaultValue={my.username}
             name="username"
             type="text"
             id="username"
-            // onChange={handleChange}
+            required
+            onChange={handleChange}
           />
         </div>
         <div className="flex-row space-between my-2">
           <label className="font-bold mr-2" htmlFor="email">Account Email:</label>
           <input
-            value={my.email}
+            defaultValue={my.email}
             name="email"
             type="text"
             id="email"
-            // onChange={handleChange}
+            onChange={handleChange}
           />
         </div>
         <div className="flex-row space-between my-2">
           <label className="font-bold mr-2" htmlFor="gender">Gender:</label>
-          <select 
+          <select
             id="gender"
             name="gender"
             defaultValue={my.gender}
-            // onChange={handleChange}
+            required
+            onChange={handleChange}
           >
             <option value="Male">Male</option>
             <option value="Female">Female</option>
@@ -59,11 +135,12 @@ const Profile=(props) => {
         <div className="flex-row space-between my-2">
           <label className="font-bold mr-2" htmlFor="age">Age:</label>
           <input
-            value={my.age}
+            defaultValue={my.age}
             name="age"
             type="number"
             id="age"
-            // onChange={handleChange}
+            required
+            onChange={handleChange}
           />
         </div>
         <div className="flex-row space-between my-2">
@@ -72,75 +149,39 @@ const Profile=(props) => {
             defaultValue={my.location}
             name="location"
             id="location"
-            // onChange={handleChange}
+            onChange={handleChange}
           >
             {stateNames.map(state => <option value={state}>{state}</option>)}
           </select>
         </div>
         <p className="font-bold mr-2 " htmlFor="preference">Preferences:</p>
-        {/* At the moment, you cannot uncheck what is pre-checked! :-O */}
         <div>
           <div className="flex-row space-between my-2 flex flex-row ml-5">
-            <div className="mr-3">
-              {my.preference.includes("Male") ? 
-                <input
-                  type="checkbox"
-                  id="Male"
-                  name="Male"
-                  value="Male"
-                  checked
-                  // onChange={handleChange}
-                /> 
-                : 
-                <input
-                  type="checkbox"
-                  id="Male"
-                  name="Male"
-                  value="Male"
-                // onChange={handleChange}
-              />}
-              <label for="Male" className="ml-1">Men</label>
-            </div>
-            <div className="mr-3">
-              {my.preference.includes("Female") ? 
-                <input
-                  type="checkbox"
-                  id="Female"
-                  name="Female"
-                  value="Female"
-                  checked
-                  // onChange={handleChange}
-                /> 
-                : 
-                <input
-                  type="checkbox"
-                  id="Female"
-                  name="Female"
-                  value="Female"
-                // onChange={handleChange}
-              />}
-              <label for="Female" className="ml-1">Women</label>
-            </div>
-            <div className="mr-3">
-            {my.preference.includes("Non-binary") ? 
-                <input
-                  type="checkbox"
-                  id="Non-binary"
-                  name="Non-binary"
-                  value="Non-binary"
-                  checked
-                  // onChange={handleChange}
-                /> 
-                : 
-                <input
-                  type="checkbox"
-                  id="Non-binary"
-                  name="Non-binary"
-                  value="Non-binary"
-                // onChange={handleChange}
-              />}
-              <label for="Non-binary" className="ml-1">Non-binary Folks</label>
-            </div>
+            {genderOptions.map((gender, index) => {
+              return (
+                <div key={index} className="mr-3">
+                  {my.preference.includes(gender) ?
+                    <input
+                      type="checkbox"
+                      id={gender}
+                      name={gender}
+                      value={gender}
+                      defaultChecked="checked"
+                      onChange={() => handleGenderClick(index)}
+                    />
+                    :
+                    <input
+                      type="checkbox"
+                      id={gender}
+                      name={gender}
+                      value={gender}
+                      onChange={() => handleGenderClick(index)}
+                    />
+                  }
+                  <label htmlFor={gender} className="ml-1">{gender}</label>
+                </div>
+              )
+            })}
           </div>
           <div className="flex-row space-between my-2 flex flex-row ml-5">
             <div className="flex-row space-between mr-3">
@@ -151,7 +192,7 @@ const Profile=(props) => {
                 type="number"
                 id="agerangemin"
                 className="font-bold w-11"
-                // onChange={handleChange}
+                onChange={handleChange}
               />
             </div>
             <div className="flex-row space-between">
@@ -162,7 +203,7 @@ const Profile=(props) => {
                 type="number"
                 id="agerangemax"
                 className="font-bold w-11"
-                // onChange={handleChange}
+                onChange={handleChange}
               />
             </div>
           </div>
@@ -170,11 +211,11 @@ const Profile=(props) => {
         <div className="my-2">
           <label className="font-bold mr-2" htmlFor="aboutme">About Me:</label>
           <textarea
-            value={my.aboutme}
+            defaultValue={my.aboutme}
             name="aboutme"
             id="aboutme"
             className="block w-full my-2 mx-5"
-            // onChange={handleChange}
+            onChange={handleChange}
           />
         </div>
         <div className="flex-row space-between my-2">
@@ -184,7 +225,7 @@ const Profile=(props) => {
             name="img"
             type="img"
             id="img"
-            // onChange={handleChange}
+            onChange={handleChange}
           />
         </div>
         <div className="flex justify-center">

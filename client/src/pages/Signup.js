@@ -6,8 +6,7 @@ import { ADD_USER } from '../utils/mutations';
 import stateNames from '../utils/stateNames';
 import genderOptions from '../utils/genderOptions';
 
-function Signup(props) {
-  // Autofilling form makes the content in each form area undefined? Will check later
+function Signup() {
   const [formState, setFormState] = useState({ email: '', password: '' });
   const [addUser] = useMutation(ADD_USER);
   const handleFormSubmit = async (event) => {
@@ -45,7 +44,6 @@ function Signup(props) {
     });
   };
 
-  // Here begins John's attempt at managing state for the checkboxes
   const [checkedState, setCheckedState] = useState(
     new Array(genderOptions.length).fill(false)
   );
@@ -78,8 +76,8 @@ function Signup(props) {
       <div className="flex-none w-52 relative">
         <Link to="/login">← Go to Login</Link>
       </div>
-
       <h2>Signup</h2>
+
       <form onSubmit={handleFormSubmit}>
         <div className="flex-row space-between my-2">
           <label className="font-bold mr-2" htmlFor="email">Email:</label>
@@ -132,7 +130,7 @@ function Signup(props) {
             required
             onChange={handleChange}
           >
-            <option value=""></option>
+            <option></option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
             <option value="Non-binary">Non-binary</option>
@@ -168,13 +166,13 @@ function Signup(props) {
                 <div key={index} className="mr-3">
                   <input
                     type="checkbox"
-                    id={`gender-checkbox-${index}`}
+                    id={gender}
                     name={gender}
                     value={gender}
                     checked={checkedState[index]}
                     onChange={() => handleGenderClick(index)}
                   />
-                  <label htmlFor={`gender-checkbox-${index}`} className="ml-1">{gender}</label>
+                  <label htmlFor={gender} className="ml-1">{gender}</label>
                 </div>
               )
             })}
