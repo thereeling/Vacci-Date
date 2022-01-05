@@ -58,11 +58,13 @@ function Login() {
         </div>
         {error ? (
           <div>
-            <p className="error-text">The provided credentials are incorrect</p>
+            <p className="text-sm text-gray-500 error-text">The provided credentials are incorrect</p>
           </div>
         ) : null}
         <div className="flex-row flex-end">
+          <Link to="/dashboard">
           <button type="submit">Submit</button>
+          </Link>
         </div>
       </form>
     </div>
