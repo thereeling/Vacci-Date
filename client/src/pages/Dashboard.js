@@ -100,7 +100,7 @@ const Dashboard = () => {
         else{
             console.log(currentUser)
             return <div className="max-w-sm rounded overflow-hidden shadow-lg">
-            <img className="w-full" src="/img/card-top.jpg" alt="User Profile picture"/>
+            <img className="w-full" src={state.users[currentUser].img} alt="User Profile picture"/>
             <div className="px-6 py-4">
               <div className="font-bold text-xl mb-1">{state.users[currentUser].firstname}</div>
               <div className="font-bold text-l mb-2">{state.users[currentUser].age}, {state.users[currentUser].gender}</div>
