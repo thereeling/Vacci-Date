@@ -1,5 +1,6 @@
 const db = require('./connection');
 const { User } = require('../models');
+const bcrypt = require('bcrypt');
 
 db.once('open', async () => {
     await User.deleteMany();
@@ -12,11 +13,11 @@ db.once('open', async () => {
            age: 27,
            location: 'CT',
            gender: 'Male',
-           preference: 'Female',
+           preference: ['Female'],
            agerangemin: 25,
            agerangemax: 30,
-           hobbies: 'stuff',
-           aboutme: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eu sem integer vitae justo eget. Pellentesque sit amet porttitor eget dolor morbi non.'
+           aboutme: 'Loves long walks on the Beach, listening to music and living everyday like it is my last!',
+           image: 'https://vaccidate-images2.s3.amazonaws.com/27yearoldmale.jpeg'
         },
         {
             username: 'coolgirl',
@@ -26,11 +27,11 @@ db.once('open', async () => {
             age: 22,
             location: 'CT',
             gender: 'Female',
-            preference: 'Male',
+            preference: ['Male', 'Female'],
             agerangemin: 24,
             agerangemax: 28,
-            hobbies: 'stuff',
-            aboutme: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eu sem integer vitae justo eget. Pellentesque sit amet porttitor eget dolor morbi non.'
+            aboutme: 'I love Chelsea FC. There is something about winter and sitting by a fire with a drink in my hand that lets me know this life is worth living.',
+            image: 'https://vaccidate-images2.s3.amazonaws.com/22yearoldwoman.jpeg'
          },
          {
             username: 'singlemale1',
@@ -40,11 +41,11 @@ db.once('open', async () => {
             age: 55,
             location: 'CT',
             gender: 'Male',
-            preference: 'Female',
+            preference:['Female'],
             agerangemin: 50,
             agerangemax: 56,
-            hobbies: 'stuff',
-            aboutme: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eu sem integer vitae justo eget. Pellentesque sit amet porttitor eget dolor morbi non.'
+            aboutme: 'Propane and propane accessories what everyone wants. I do not have an anger problem, I have an idiot problem!',
+            image: 'https://vaccidate-images2.s3.amazonaws.com/55yearoldmale.jpeg'
          },
          {
             username: 'singlfemale1',
@@ -54,11 +55,11 @@ db.once('open', async () => {
             age: 34,
             location: 'CT',
             gender: 'Female',
-            preference: 'Female',
+            preference: ['Female', 'Male', 'Non-binary'],
             agerangemin: 30,
             agerangemax: 40,
-            hobbies: 'stuff',
-            aboutme: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eu sem integer vitae justo eget. Pellentesque sit amet porttitor eget dolor morbi non.'
+            aboutme: 'I like to sit around and read a good book and talk, but sometimes I like to go and play laser tag.', 
+            image: 'https://vaccidate-images2.s3.amazonaws.com/34yearoldwoman.jpeg'
          },
          {
             username: 'singlenonbi1',
@@ -68,11 +69,11 @@ db.once('open', async () => {
             age: 29,
             location: 'CT',
             gender: 'Non-binary',
-            preference: 'Male',
+            preference: ['Male', 'Female', 'Non-binary'],
             agerangemin: 30,
             agerangemax: 40,
-            hobbies: 'stuff',
-            aboutme: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eu sem integer vitae justo eget. Pellentesque sit amet porttitor eget dolor morbi non.'
+            aboutme: 'Sometimes it takes a while for me to come out of my shell, but when I do, its all fun and memories to make.',
+            image: 'https://vaccidate-images2.s3.amazonaws.com/29yearoldmale.jpeg'
          },
          {
             username: 'singlemale2',
@@ -82,11 +83,11 @@ db.once('open', async () => {
             age: 45,
             location: 'CT',
             gender: 'Male',
-            preference: 'Female',
+            preference: ['Female', 'Male'],
             agerangemin: 30,
             agerangemax: 47,
-            hobbies: 'stuff',
-            aboutme: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eu sem integer vitae justo eget. Pellentesque sit amet porttitor eget dolor morbi non.'
+            aboutme: 'There are only a few things that can get me excited. Getting to know you and wondering when our next date is going to be.',
+            image: 'https://vaccidate-images2.s3.amazonaws.com/45yearoldmale.jpeg'
          },
          {
             username: 'singlefemale2',
@@ -96,11 +97,11 @@ db.once('open', async () => {
             age: 58,
             location: 'CT',
             gender: 'Female',
-            preference: 'Male',
+            preference: ['Male', 'Female'],
             agerangemin: 30,
             agerangemax: 47,
-            hobbies: 'stuff',
-            aboutme: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eu sem integer vitae justo eget. Pellentesque sit amet porttitor eget dolor morbi non.'
+            aboutme: 'I will not want to speak to the manger when I am around you. I believe in natural remedies to solve all problems. Except COVID. GET VACCINATED!',
+            image: 'https://vaccidate-images2.s3.amazonaws.com/58yearoldwoman.jpeg'
          },
          {
             username: 'singlemale3',
@@ -110,11 +111,11 @@ db.once('open', async () => {
             age: 38,
             location: 'CT',
             gender: 'Male',
-            preference: 'Non-binary',
+            preference: ['Non-binary'],
             agerangemin: 30,
             agerangemax: 47,
-            hobbies: 'stuff',
-            aboutme: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Eu sem integer vitae justo eget. Pellentesque sit amet porttitor eget dolor morbi non.'
+            aboutme: 'Man, hanging by the beach is the best. Surfing and skating are awesome. Let us all just chill a little and just relax man.',
+            image: 'https://vaccidate-images2.s3.amazonaws.com/38yearoldmale.jpeg'
          },
     ])
     console.log('Users seeded!');
