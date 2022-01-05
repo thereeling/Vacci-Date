@@ -44,6 +44,19 @@ const Profile=(props) => {
           />
         </div>
         <div className="flex-row space-between my-2">
+          <label className="font-bold mr-2" htmlFor="gender">Gender:</label>
+          <select 
+            id="gender"
+            name="gender"
+            defaultValue={my.gender}
+            // onChange={handleChange}
+          >
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Non-binary">Non-binary</option>
+          </select>
+        </div>
+        <div className="flex-row space-between my-2">
           <label className="font-bold mr-2" htmlFor="age">Age:</label>
           <input
             value={my.age}
@@ -64,19 +77,6 @@ const Profile=(props) => {
             {stateNames.map(state => <option value={state}>{state}</option>)}
           </select>
         </div>
-        <div className="flex-row space-between my-2">
-          <label className="font-bold mr-2" htmlFor="gender">Gender:</label>
-          <select 
-            id="gender"
-            name="gender"
-            defaultValue={my.gender}
-            // onChange={handleChange}
-          >
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Non-binary">Non-binary</option>
-          </select>
-        </div>
         <p className="font-bold mr-2 " htmlFor="preference">Preferences:</p>
         {/* At the moment, you cannot uncheck what is pre-checked! :-O */}
         <div>
@@ -87,6 +87,7 @@ const Profile=(props) => {
                   type="checkbox"
                   id="Male"
                   name="Male"
+                  value="Male"
                   checked
                   // onChange={handleChange}
                 /> 
@@ -95,6 +96,7 @@ const Profile=(props) => {
                   type="checkbox"
                   id="Male"
                   name="Male"
+                  value="Male"
                 // onChange={handleChange}
               />}
               <label for="Male" className="ml-1">Men</label>
@@ -105,6 +107,7 @@ const Profile=(props) => {
                   type="checkbox"
                   id="Female"
                   name="Female"
+                  value="Female"
                   checked
                   // onChange={handleChange}
                 /> 
@@ -113,6 +116,7 @@ const Profile=(props) => {
                   type="checkbox"
                   id="Female"
                   name="Female"
+                  value="Female"
                 // onChange={handleChange}
               />}
               <label for="Female" className="ml-1">Women</label>
@@ -123,6 +127,7 @@ const Profile=(props) => {
                   type="checkbox"
                   id="Non-binary"
                   name="Non-binary"
+                  value="Non-binary"
                   checked
                   // onChange={handleChange}
                 /> 
@@ -131,6 +136,7 @@ const Profile=(props) => {
                   type="checkbox"
                   id="Non-binary"
                   name="Non-binary"
+                  value="Non-binary"
                 // onChange={handleChange}
               />}
               <label for="Non-binary" className="ml-1">Non-binary Folks</label>
@@ -143,18 +149,18 @@ const Profile=(props) => {
                 defaultValue={my.agerangemin}
                 name="agerangemin"
                 type="number"
-                id="about-me"
+                id="agerangemin"
                 className="font-bold w-11"
                 // onChange={handleChange}
               />
             </div>
             <div className="flex-row space-between">
-              <label className="mr-1" htmlFor="agerangemin">Maximum Age:</label>
+              <label className="mr-1" htmlFor="agerangemax">Maximum Age:</label>
               <input
                 defaultValue={my.agerangemax}
-                name="agerangemin"
+                name="agerangemax"
                 type="number"
-                id="about-me"
+                id="agerangemax"
                 className="font-bold w-11"
                 // onChange={handleChange}
               />
@@ -162,12 +168,11 @@ const Profile=(props) => {
           </div>
         </div>
         <div className="my-2">
-          <label className="font-bold mr-2" htmlFor="about-me">About Me:</label>
+          <label className="font-bold mr-2" htmlFor="aboutme">About Me:</label>
           <textarea
             value={my.aboutme}
             name="aboutme"
-            type="textarea"
-            id="about-me"
+            id="aboutme"
             className="block w-full my-2 mx-5"
             // onChange={handleChange}
           />
