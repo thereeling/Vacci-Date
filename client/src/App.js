@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import {
   ApolloClient,
   ApolloProvider,
@@ -16,6 +16,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Nav from './components/Nav';
 import Dashboard from './pages/Dashboard';
+import Auth from './utils/auth'
 
 // Have to change http link when we deploy
 const httpLink = createHttpLink({
@@ -45,7 +46,7 @@ function App() {
            <Nav />
             <Routes>
               <Route exact path="/" element={<Home/>} />
-              <Route exact path="/login" element={<Login/>} />
+              <Route exact path="/login" element={<Login/>}/>
               <Route exact path="/signup" element={<Signup/>} />
               <Route exact path="/signup" element={<Dashboard/>} />
               <Route exact path="/profile" element={<Profile/>} />
