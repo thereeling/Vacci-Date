@@ -9,7 +9,7 @@ const typeDefs = gql`
         age: Int
         location: String
         gender: String
-        preference: String
+        preference: [String]
         agerangemin: Int
         agerangemax: Int
         hobbies: String
@@ -37,7 +37,7 @@ const typeDefs = gql`
         age: Int
         location: String
         gender: String
-        preference: String
+        preference: [String]
         agerangemin: Int
         agerangemax: Int
         hobbies: String

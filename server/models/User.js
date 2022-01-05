@@ -43,39 +43,19 @@ const userSchema = new Schema(
             required: true,
             enum: ['Male', 'Female', 'Non-binary']
         },
-        preference: {
+        preference: [{
             type: String,
             required: true,
             enum: ['Male', 'Female', 'Non-binary']
-        },
+        }],
        
         agerangemin: {
             type: Number,
             min: 18,
-            // validate: {
-            //     validator: function(val){
-            //         const ageMax = this.target.agerangemax;
-            //         return (ageMax !== undefined ? val <= ageMax : true);
-            //     },
-            //     message: 'The MIN range with value {VALUE} must be <= the max range!'
-            // }
         },
         agerangemax: {
             type: Number,
             min: 18,
-            // validate: {
-            //     validator: function(val){
-            //         const ageMin = this.target.agerangemin;
-            //         return (ageMin !== undefined ? val >= ageMin : true);
-            //     },
-            //     message: 'The MIN range with value {VALUE} must be >= the min range!'
-            // }
-        },
-
-        // Don't know what to put in hobby list, will bring to groups attention
-        hobbies: {
-            type: String,
-            // enum: ['etc..']
         },
         aboutme: {
             type: String,
