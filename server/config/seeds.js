@@ -17,7 +17,7 @@ db.once('open', async () => {
            agerangemin: 25,
            agerangemax: 30,
            aboutme: 'Loves long walks on the Beach, listening to music and living everyday like it is my last!',
-           image: 'https://vaccidate-images2.s3.amazonaws.com/27yearoldmale.jpeg'
+           image: 'https://vaccidate-images2.s3.amazonaws.com/27yearOldMale.jpeg'
         },
         {
             username: 'coolgirl',
