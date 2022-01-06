@@ -27,8 +27,9 @@ const Home = () => {
                     >
                         <Link to ="/signup">
                             Sign Up
+                            <Icon icon="ic:round-keyboard-double-arrow-right" inline={true} />
                         </Link>
-                        <Icon icon="ic:round-keyboard-double-arrow-right" />
+                        
                     </button>
                 </div>
                 <div className="col-span-2 p-4">
