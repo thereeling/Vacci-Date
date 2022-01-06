@@ -7,8 +7,9 @@ import { FILTERED_USERS } from '../utils/actions';
 
 const Dashboard = () => {
     const [currentUser, setCurrentUser] = useState(0);
+    const [likedUsers, setLikedUser] = useState([]);
+    const [initialUsers, setInitialUsers] = useState([]);
     const [state, dispatch] = useUserContext();
-
 
     const { data: allData, error: allError, loading: allLoading } = useQuery(QUERY_ALL_USERS,{
         pollInterval: 500,
@@ -16,7 +17,8 @@ const Dashboard = () => {
     const { data: meData, error: meError, loading: meLoading } = useQuery(QUERY_USER,{
         pollInterval: 500,
     });
-    const [onLikeHandler, {data, loading, error}] = useMutation(LIKE_USER);
+    const [onLikeHandler] = useMutation(LIKE_USER);
+    
 
     useEffect(() => {
         if(allData && meData){
@@ -29,11 +31,11 @@ const Dashboard = () => {
                 && user.age >= meData.me.agerangemin 
                 && user.age <= meData.me.agerangemax
             }});
-            console.log(filteredUsers);
             dispatch({
                 type: FILTERED_USERS,
                 users: filteredUsers
-            });  
+            });
+            setInitialUsers(...initialUsers, filteredUsers)
         }  
     }, [meLoading, allLoading, dispatch])
 
@@ -41,32 +43,29 @@ const Dashboard = () => {
     if (allLoading || meLoading) {
         return <h2>LOADING...</h2>;
     };
+    if(allError){
+        return `Error: ${allError.message}`
+    };
+    if(meError){
+        return `Error: ${meError.message}`
+    };
 
 
 
     const handleUserOnYesClick = () => {
-        onLikeHandler({variables: {_id: state.users[currentUser]._id}});
-        // if(allData && meData){
-        //     const filteredUsers = allData.all.filter((user) => {
-        //         if(!user.likedby.includes(meData.me._id) && user._id !== meData.me._id){
-        //         return meData.me.preference.includes(user.gender) 
-        //         && user.preference.includes(meData.me.gender)
-        //         && meData.me.age >= user.agerangemin
-        //         && meData.me.age <= user.agerangemax 
-        //         && user.age >= meData.me.agerangemin 
-        //         && user.age <= meData.me.agerangemax
-        //     }});
-            
-        //     dispatch({
-        //         type: FILTERED_USERS,
-        //         users: filteredUsers
-        //     });
-        // }  
-        // console.log(state.users); 
+        onLikeHandler({variables: {_id: initialUsers[currentUser]._id}});
+        const newCurrentUser = currentUser   
+        setLikedUser([...likedUsers, newCurrentUser])
+        console.log(initialUsers.length)
+        if(initialUsers.length === 1){
+            setInitialUsers([]);
+            return
+        }           
         setCurrentUser(prev => {
-            console.log(state.users.length);
-            if(prev === state.users.length - 1) {
-              return  window.location.reload(false);
+            if(prev === initialUsers.length - 1) {
+                setLikedUser([]);
+                setInitialUsers(initialUsers.filter((user, index) => !likedUsers.includes(index))); 
+                return 0
             }
             else {
                 return prev + 1;
@@ -75,34 +74,34 @@ const Dashboard = () => {
     };
 
     const handleUserOnNoClick = () => {
-        
-
-        setCurrentUser(prev => { 
-            if(prev === state.users.length - 1) {
-                return window.location.reload(false);
+        setCurrentUser(prev => {
+            if(prev === initialUsers.length - 1) {
+                setLikedUser([]) 
+                setInitialUsers(initialUsers.filter((user, index) => !likedUsers.includes(index)))
+                return 0
             }
             else {
                 return prev + 1;
             }
-        });
+        });        
     };
   
     const renderUser = () => {
+          
         if(!state.users){
             return <h1>LOADING...</h1>
         }
-        if(state.users.length === 0){
+        if(state.users.length === 0 || initialUsers.length === 0){
             return <h1>Sorry! There are no compatible singles for you right now, or you already liked them all!  Please check again later!</h1>
         }
         else{
-            console.log(currentUser);
             return <div className="max-w-sm rounded overflow-hidden shadow-lg">
-            {state.users[currentUser].img ? <img className="w-full" src={state.users[currentUser].img} alt="User Profile picture"/> : <div></div>}
+            {initialUsers[currentUser].img ? <img className="w-full" src={initialUsers[currentUser].img} alt="User Profile picture"/> : <div></div>}
             <div className="px-6 py-4">
-              <div className="font-bold text-xl mb-1">{state.users[currentUser].firstname}</div>
-              <div className="font-bold text-l mb-2">{state.users[currentUser].age}, {state.users[currentUser].gender}</div>
+              <div className="font-bold text-xl mb-1">{initialUsers[currentUser].firstname}</div>
+              <div className="font-bold text-l mb-2">{initialUsers[currentUser].age}, {initialUsers[currentUser].gender}</div>
               <p className="text-gray-700 text-base">
-              {state.users[currentUser].aboutme}
+              {initialUsers[currentUser].aboutme}
               </p>
             </div>
             <div className="px-6 pt-4 pb-2 flex justify-between">
