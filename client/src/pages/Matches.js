@@ -1,4 +1,8 @@
 import React from 'react';
+import Auth from '../utils/auth';
+import { QUERY_ALL_USERS, QUERY_USER } from '../utils/queries';
+import { UNLIKE_USER } from '../utils/mutations';
+import { useQuery, useMutation } from '@apollo/client';
 
 const match = []
 
