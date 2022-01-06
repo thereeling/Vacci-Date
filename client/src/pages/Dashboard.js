@@ -95,6 +95,9 @@ const Dashboard = () => {
             return <h1>Sorry! There are no compatible singles for you right now, or you already liked them all!  Please check again later!</h1>
         }
         else{
+            console.log(currentUser);
+            console.log(likedUsers);
+            console.log(initialUsers);
             return <div className="max-w-sm rounded overflow-hidden shadow-lg">
             {initialUsers[currentUser].img ? <img className="w-full" src={initialUsers[currentUser].img} alt="User Profile picture"/> : <div></div>}
             <div className="px-6 py-4">
