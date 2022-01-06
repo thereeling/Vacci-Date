@@ -66,9 +66,9 @@ After you have clicked the link above, you can follow the instructions below!
 
 6. When you match with someone, you will see that under your matches tab.
 
-7. ____
+7. When you want to erase your profile, _____
 
-8. ___
+8. 
 
 ## Support
 
