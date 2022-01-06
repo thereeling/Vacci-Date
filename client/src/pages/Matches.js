@@ -77,7 +77,7 @@ export default function Matches() {
                     </p>
                 </div>
                 <div className="px-6 pt-4 pb-2 flex justify-between">
-                <button onClick={() => handleUnlikeUser(user._id)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 w-1/3 rounded">
+                <button onClick={() => handleUnlikeUser(user._id)} className="bg-pink-500 text-white font-bold hover:bg-white hover:text-pink-500 py-2 px-4 w-1/3 rounded">
                     Unlike
                 </button>
                 </div>
