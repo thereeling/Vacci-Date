@@ -9,10 +9,17 @@ import { useQuery } from '@apollo/client';
 import { QUERY_USER } from '../utils/queries';
 
 const Profile = () => {
+  const { data, loading, error: userError } = useQuery(QUERY_USER,{
+    pollInterval: 500,
+  });
+
+  if(loading){
+    <h1>LOADING...</h1>
+  }
+  const my = data?.me || {};
   const [formState, setFormState] = useState();
   const [updateUser] = useMutation(UPDATE_USER);
   const [deleteUser] = useMutation(DELETE_USER);
-
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     if (formState.agerangemax < formState.agerangemin) {
@@ -32,7 +39,8 @@ const Profile = () => {
           preference: formState.preference || my.preference,
           agerangemin: parseInt(formState.agerangemin) || parseInt(my.agerangemin),
           agerangemax: parseInt(formState.agerangemax) || parseInt(my.agerangemax),
-          aboutme: formState.aboutme
+          aboutme: formState.aboutme,
+          img: checkedAvatar
         }
       },
     });
@@ -48,9 +56,6 @@ const Profile = () => {
     });
   };
 
-  const { data, error: userError } = useQuery(QUERY_USER);
-  const my = data?.me || {};
-
   // We need to set checkedState based on the queried preferences
   const genderState = genderOptions.map(function (gender) {
     if (my.preference.includes(gender)) {
@@ -59,6 +64,8 @@ const Profile = () => {
       return false
     }
   });
+
+  const [checkedAvatar, setCheckedAvatar] = useState(`${my.img}`);
 
   const [checkedState, setCheckedState] = useState(genderState);
 
@@ -81,6 +88,9 @@ const Profile = () => {
       preference: genderArray,
     });
   }
+  const handleAvatarClick = (e) => {
+    setCheckedAvatar(e.target.value)
+  };
 
   const handleDelete = async (event) => {
     if (window.confirm("Do you really want to delete your profile?")) {
@@ -139,31 +149,66 @@ const Profile = () => {
                     </p>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700" htmlFor="img">
+                    <label className="block text-sm font-medium text-gray-700" htmlFor="avatarlist">
                       Avatar Selection:
                     </label>
-                    <div className="mt-1 flex items-center">
-                      <span className="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
-                        <svg className="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                        </svg>
-                      </span>
-                      <button
-                        type="button"
-                        className="ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-pink-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-300"
-                      >
-                        Change
-                      </button>
-                    </div>
+                      <ul id='avatarlist' className="grid grid-cols-4 gap-x-5 m-10 max-w-md mx-auto">
+                        <li className='relative'>
+                          <input
+                          className="sr-only peer"
+                          placeholder="Please choose and image"
+                          name="img"
+                          type="radio"
+                          id="maleavatar1"
+                          defaultChecked={'https://vaccidate-images2.s3.amazonaws.com/maleavatar1.jpeg' === checkedAvatar}
+                          value='https://vaccidate-images2.s3.amazonaws.com/maleavatar1.jpeg'
+                          onChange={handleAvatarClick}
+                          />
+                          <label htmlFor='maleavatar1' className='flex p-5 bg-white border border-gray-300 rounded-lg cursor-pointer focus:outline-none hover:bg-gray-50 peer-checked:ring-pink-500 peer-checked:ring-2 peer-checked:border-transparent'><img src='https://vaccidate-images2.s3.amazonaws.com/maleavatar1.jpeg' /></label>
+                        </li>
+                        <li className='relative'>
+                          <input
+                          className="sr-only peer"
+                          placeholder="Please choose and image"
+                          name="img"
+                          type="radio"
+                          id="maleavatar2"
+                          defaultChecked={'https://vaccidate-images2.s3.amazonaws.com/maleavatar2.jpeg' === checkedAvatar}
+                          value='https://vaccidate-images2.s3.amazonaws.com/maleavatar2.jpeg'
+                          onChange={handleAvatarClick}
+                          />
+                          <label htmlFor='maleavatar2' className='flex p-5 bg-white border border-gray-300 rounded-lg cursor-pointer focus:outline-none hover:bg-gray-50 peer-checked:ring-pink-500 peer-checked:ring-2 peer-checked:border-transparent'><img src='https://vaccidate-images2.s3.amazonaws.com/maleavatar2.jpeg' /></label>
+                        </li>
+                        <li className='relative'>
+                          <input
+                          className="sr-only peer"
+                          placeholder="Please choose and image"
+                          name="img"
+                          type="radio"
+                          id="femaleavatar1"
+                          defaultChecked={'https://vaccidate-images2.s3.amazonaws.com/womanavatar1.jpeg' === checkedAvatar}
+                          value='https://vaccidate-images2.s3.amazonaws.com/womanavatar1.jpeg'
+                          onChange={handleAvatarClick}
+                          />
+                          <label htmlFor='femaleavatar1' className='flex p-5 bg-white border border-gray-300 rounded-lg cursor-pointer focus:outline-none hover:bg-gray-50 peer-checked:ring-pink-500 peer-checked:ring-2 peer-checked:border-transparent'><img src='https://vaccidate-images2.s3.amazonaws.com/womanavatar1.jpeg' /></label>
+                        </li>
+                        <li className='relative'>
+                          <input
+                          className="sr-only peer"
+                          placeholder="Please choose and image"
+                          name="img"
+                          type="radio"
+                          id="femaleavatar2"
+                          defaultChecked={'https://vaccidate-images2.s3.amazonaws.com/womanavatar2.jpeg' === checkedAvatar}
+                          value='https://vaccidate-images2.s3.amazonaws.com/womanavatar2.jpeg'
+                          onChange={handleAvatarClick}
+                          />
+                          <label htmlFor='femaleavatar2' className='flex p-5 bg-white border border-gray-300 rounded-lg cursor-pointer focus:outline-none hover:bg-gray-50 peer-checked:ring-pink-500 peer-checked:ring-2 peer-checked:border-transparent'><img src='https://vaccidate-images2.s3.amazonaws.com/womanavatar2.jpeg' /></label>
+                        </li>
+                      </ul>
                   </div>
                 </div>
                 <div className="px-4 py-3 bg-pink-50 text-right sm:px-6">
-                  <button
-                    type="submit"
-                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
-                  >
-                    Save
-                  </button>
                 </div>
               </div>
             </form>
@@ -293,7 +338,7 @@ const Profile = () => {
                       />
                     </div>
                     <div className="col-span-6 sm:col-span-3">
-                      <label htmlFor="agerangemin" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="agerangemax" className="block text-sm font-medium text-gray-700">
                         Maximum Age:
                       </label>
                       <input
@@ -329,14 +374,5 @@ const Profile = () => {
     </>
   )
 }
-
-//Not sure if we need this for avatar section
-//<input
-//placeholder="img"
-//name="img"
-//type="img"
-//id="img"
-// onChange={handleChange}
-
 
 export default Profile;
