@@ -155,7 +155,7 @@ function Signup() {
             id="location"
             onChange={handleChange}
           >
-            {stateNames.map(state => <option value={state}>{state}</option>)}
+            {stateNames.map(state => <option key={state} value={state}>{state}</option>)}
           </select>
         </div>
         <p className="font-bold mr-2 " htmlFor="preference">Preferences:</p>

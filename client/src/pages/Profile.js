@@ -47,20 +47,19 @@ const Profile = () => {
       [name]: value,
     });
   };
-  
-  const { data, error } = useQuery(QUERY_USER);
+
+  const { data, error: userError } = useQuery(QUERY_USER);
   const my = data?.me || {};
-  console.log(my);
 
   // We need to set checkedState based on the queried preferences
-  const genderState = genderOptions.map(function(gender) {
+  const genderState = genderOptions.map(function (gender) {
     if (my.preference.includes(gender)) {
       return true
     } else {
       return false
     }
   });
-  
+
   const [checkedState, setCheckedState] = useState(genderState);
 
   const handleGenderClick = (position) => {
@@ -81,23 +80,13 @@ const Profile = () => {
       ...formState,
       preference: genderArray,
     });
-    console.log('genderState:')
-    console.log(genderState)
-    console.log('checkedState:')
-    console.log(checkedState)
-    console.log('updatedCheckedState:')
-    console.log(updatedCheckedState)
-    console.log('initialGenderArr:')
-    console.log(initialGenderArr)
-    console.log('genderArray:')
-    console.log(genderArray)
   }
 
   const handleDelete = async (event) => {
     if (window.confirm("Do you really want to delete your profile?")) {
-      deleteUser();
+      await deleteUser();
       Auth.logout();
-    }   
+    }
   }
 
   return (
@@ -160,7 +149,7 @@ const Profile = () => {
             id="location"
             onChange={handleChange}
           >
-            {stateNames.map(state => <option value={state}>{state}</option>)}
+            {stateNames.map(state => <option key={state} value={state}>{state}</option>)}
           </select>
         </div>
         <p className="font-bold mr-2 " htmlFor="preference">Preferences:</p>
