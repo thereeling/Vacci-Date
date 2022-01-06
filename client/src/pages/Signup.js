@@ -8,6 +8,7 @@ import genderOptions from '../utils/genderOptions';
 
 function Signup() {
   const [formState, setFormState] = useState({ email: '', password: '' });
+  const [checkedAvatar, setCheckedAvatar] = useState('');
   const [addUser] = useMutation(ADD_USER);
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -28,7 +29,8 @@ function Signup() {
           preference: formState.preference,
           agerangemin: parseInt(formState.agerangemin),
           agerangemax: parseInt(formState.agerangemax),
-          aboutme: formState.aboutme
+          aboutme: formState.aboutme,
+          img: checkedAvatar
         }
       },
     });
@@ -66,10 +68,12 @@ function Signup() {
       ...formState,
       preference: genderArray,
     });
+    
+  };
 
-    console.log('genderArray:')
-    console.log(genderArray)
-  }
+  const handleAvatarClick = (e) => {
+    setCheckedAvatar(e.target.value)
+  };
 
   return (
     <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 font-mono">
@@ -239,17 +243,59 @@ function Signup() {
               />
             </div>
             <div>
-              <label htmlFor="img" className="">
-                Choose your Profile Picture:
+              <label htmlFor="avatarlist" className="">
+                Choose your Avatar:
               </label>
-              <input
-                placeholder="Please choose and image"
-                name="img"
-                type="img"
-                id="img"
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-pink-600 focus:border-pink-500 focus:z-10 sm:text-sm"
-                onChange={handleChange}
-              />
+              <ul id='avatarlist' className="grid grid-cols-3 gap-x-5 m-10 max-w-md mx-auto">
+                <li className='relative'>
+                  <input
+                  className="sr-only peer"
+                  placeholder="Please choose and image"
+                  name="img"
+                  type="radio"
+                  id="maleavatar1"
+                  value='https://vaccidate-images2.s3.amazonaws.com/maleavatar1.jpeg'
+                  onChange={handleAvatarClick}
+                  />
+                  <label htmlFor='maleavatar1' className='flex p-5 bg-white border border-gray-300 rounded-lg cursor-pointer focus:outline-none hover:bg-gray-50 peer-checked:ring-pink-500 peer-checked:ring-2 peer-checked:border-transparent'><img src='https://vaccidate-images2.s3.amazonaws.com/maleavatar1.jpeg' /></label>
+                </li>
+                <li className='relative'>
+                  <input
+                  className="sr-only peer"
+                  placeholder="Please choose and image"
+                  name="img"
+                  type="radio"
+                  id="maleavatar2"
+                  value='https://vaccidate-images2.s3.amazonaws.com/maleavatar2.jpeg'
+                  onChange={handleAvatarClick}
+                  />
+                  <label htmlFor='maleavatar2' className='flex p-5 bg-white border border-gray-300 rounded-lg cursor-pointer focus:outline-none hover:bg-gray-50 peer-checked:ring-pink-500 peer-checked:ring-2 peer-checked:border-transparent'><img src='https://vaccidate-images2.s3.amazonaws.com/maleavatar2.jpeg' /></label>
+                </li>
+                <li className='relative'>
+                  <input
+                  className="sr-only peer"
+                  placeholder="Please choose and image"
+                  name="img"
+                  type="radio"
+                  id="femaleavatar1"
+                  value='https://vaccidate-images2.s3.amazonaws.com/womanavatar1.jpeg'
+                  onChange={handleAvatarClick}
+                  />
+                  <label htmlFor='femaleavatar1' className='flex p-5 bg-white border border-gray-300 rounded-lg cursor-pointer focus:outline-none hover:bg-gray-50 peer-checked:ring-pink-500 peer-checked:ring-2 peer-checked:border-transparent'><img src='https://vaccidate-images2.s3.amazonaws.com/womanavatar1.jpeg' /></label>
+                </li>
+                <li className='relative'>
+                  <input
+                  className="sr-only peer"
+                  placeholder="Please choose and image"
+                  name="img"
+                  type="radio"
+                  id="femaleavatar2"
+                  value='https://vaccidate-images2.s3.amazonaws.com/womanavatar2.jpeg'
+                  onChange={handleAvatarClick}
+                  />
+                  <label htmlFor='femaleavatar2' className='flex p-5 bg-white border border-gray-300 rounded-lg cursor-pointer focus:outline-none hover:bg-gray-50 peer-checked:ring-pink-500 peer-checked:ring-2 peer-checked:border-transparent'><img src='https://vaccidate-images2.s3.amazonaws.com/womanavatar2.jpeg' /></label>
+                </li>
+              </ul>
             </div>
           </div>
           <div className="flex items-center justify-between">
