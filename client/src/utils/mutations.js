@@ -31,6 +31,7 @@ export const ADD_USER = gql`
                 likes
                 likedby
                 matches
+                img
             }
         }
     }
@@ -51,6 +52,7 @@ export const UPDATE_USER = gql `
             agerangemax
             hobbies
             aboutme
+            img
         }
     }
 `;
