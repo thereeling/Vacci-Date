@@ -109,11 +109,11 @@ const Dashboard = () => {
             </div>
             <div className="px-6 pt-4 pb-2 flex justify-between">
             <button onClick={handleUserOnNoClick} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 w-1/3 rounded">
-                No Thanks!
+                Next
             </button>
             
             <button onClick={handleUserOnYesClick} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 w-1/3 rounded">
-                Yes!
+                Like
             </button>
             </div>
           </div>

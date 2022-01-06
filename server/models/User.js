@@ -52,10 +52,12 @@ const userSchema = new Schema(
         agerangemin: {
             type: Number,
             min: 18,
+            required: true
         },
         agerangemax: {
             type: Number,
             min: 18,
+            required: true
         },
         aboutme: {
             type: String,
