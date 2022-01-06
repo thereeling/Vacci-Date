@@ -118,7 +118,7 @@ function Signup() {
                 Email:
               </label>
               <input
-                placeholder="your-email@test.com"
+                placeholder="Your-email@test.com"
                 name="email"
                 type="text"
                 id="email"
@@ -145,7 +145,7 @@ function Signup() {
                 Age:
               </label>
               <input
-                placeholder="age"
+                placeholder="Age"
                 name="age"
                 type="number"
                 id="age"
