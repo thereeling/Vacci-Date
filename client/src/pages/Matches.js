@@ -7,10 +7,10 @@ import { useQuery, useMutation } from '@apollo/client';
 
 
 export default function Matches() {
-    const {loading: meLoading, error: meError, data: meData} = useQuery(QUERY_USER, {
+    const {data: meData, loading: meLoading, error: meError } = useQuery(QUERY_USER, {
       pollInterval: 500,
     });
-    const {loading: allLoading, error: allError, data: allData} = useQuery(QUERY_ALL_USER, {
+    const { data: allData, loading: allLoading, error: allError } = useQuery(QUERY_ALL_USERS, {
       pollInterval: 500,
     });
     const [unlikeUser] = useMutation(UNLIKE_USER);
@@ -52,30 +52,40 @@ export default function Matches() {
             <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
               {allData.all.map((user) => {
                 if(user.matches.includes(meData.me._id)){
-                  <div key={match.id} className="group relative">
-                  <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
-                    <img
-                      src={match.imageSrc}
-                      alt={match.imageAlt}
-                      className="w-full h-full object-center object-cover lg:w-full lg:h-full"
-                    />
-                  </div>
-                  <div className="mt-4 flex justify-between">
-                    <div>
-                      <h3 className="text-sm text-gray-700">
-                        <a href={match.href}>
-                          <span aria-hidden="true" className="absolute inset-0" />
-                          {match.name}
-                        </a>
-                      </h3> 
-                    </div>
-                    <p className="text-sm font-medium text-gray-900">{match.age}</p>
-                  </div>
+                //   return <div className="group relative">
+                //   <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
+                //   {user.img ? <img className="w-full h-full object-center object-cover lg:w-full lg:h-full" src={user.img} alt="User Profile picture"/> : <div></div>}   
+                //   </div>
+                //   <div className="mt-4 flex justify-between">
+                //     <div>
+                //       <h3 className="text-sm text-gray-700">
+               
+                //           {user.firstname}
+                        
+                //       </h3> 
+                //     </div>
+                //     <p className="text-sm font-medium text-gray-900">{user.age}</p>
+                //   </div>
+                // </div>
+                return <div className="max-w-sm rounded overflow-hidden shadow-lg">
+                {user.img ? <img className="w-full h-full object-center object-cover lg:w-full lg:h-full" src={user.img} alt="User Profile picture"/> : <div></div>}    
+                <div className="px-6 py-4">
+                    <div className="font-bold text-xl mb-1">{user.firstname}</div>
+                    <div className="font-bold text-l mb-2">{user.age}, {user.gender}</div>
+                    <p className="text-gray-700 text-base">
+                    {user.aboutme}
+                    </p>
                 </div>
+                <div className="px-6 pt-4 pb-2 flex justify-between">
+                <button onClick={() => handleUnlikeUser(user._id)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 w-1/3 rounded">
+                    Unlike
+                </button>
+                </div>
+              </div>
                 }
               })}
             </div>
           </div>
         </div>
       )
-}
+};
