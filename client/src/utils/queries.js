@@ -13,7 +13,6 @@ export const QUERY_USER = gql`
             preference
             agerangemin
             agerangemax
-            hobbies
             aboutme
             likes
             likedby
