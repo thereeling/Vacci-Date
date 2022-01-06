@@ -26,7 +26,6 @@ export const ADD_USER = gql`
                 preference
                 agerangemin
                 agerangemax
-                hobbies
                 aboutme
                 likes
                 likedby
