@@ -49,7 +49,7 @@ function App() {
               <Route exact path="/login" element={<Login/>}/>
               <Route exact path="/signup" element={<Signup/>} />
               <Route exact path="/signup" element={<Dashboard/>} />
-              {/* <Route exact path="/profile" element={<Profile/>} /> */}
+              <Route exact path="/profile" element={<Profile/>} />
               <Route exact path="/dashboard" element={<Dashboard/>}/>
               <Route exact path="/matches" element={<Matches/>}/>
               <Route element={NotFound} />
