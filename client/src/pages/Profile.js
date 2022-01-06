@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { UPDATE_USER } from '../utils/mutations';
+import { UPDATE_USER, DELETE_USER } from '../utils/mutations';
 import stateNames from '../utils/stateNames';
 import genderOptions from '../utils/genderOptions';
+import Auth from '../utils/auth'
 
 import { useQuery } from '@apollo/client';
 import { QUERY_USER } from '../utils/queries';
@@ -10,6 +11,7 @@ import { QUERY_USER } from '../utils/queries';
 const Profile = () => {
   const [formState, setFormState] = useState();
   const [updateUser] = useMutation(UPDATE_USER);
+  const [deleteUser] = useMutation(DELETE_USER);
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -89,6 +91,13 @@ const Profile = () => {
     console.log(initialGenderArr)
     console.log('genderArray:')
     console.log(genderArray)
+  }
+
+  const handleDelete = async (event) => {
+    if (window.confirm("Do you really want to delete your profile?")) {
+      deleteUser();
+      Auth.logout();
+    }   
   }
 
   return (
@@ -228,8 +237,9 @@ const Profile = () => {
             onChange={handleChange}
           />
         </div>
-        <div className="flex justify-center">
-          <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
+        <div className="flex justify-center space-x-2">
+          <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Update</button>
+          <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onClick={handleDelete}>Delete Profile</button>
         </div>
       </form>
     </div>
