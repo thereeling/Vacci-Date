@@ -18,6 +18,7 @@ export const QUERY_USER = gql`
             likes
             likedby
             matches
+            img
         }
     }
 `;
@@ -40,6 +41,7 @@ export const QUERY_ALL_USERS = gql`
             likes
             likedby
             matches
+            img
         }
     }
 `;
