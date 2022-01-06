@@ -4,75 +4,39 @@ import { QUERY_ALL_USERS, QUERY_USER } from '../utils/queries';
 import { UNLIKE_USER } from '../utils/mutations';
 import { useQuery, useMutation } from '@apollo/client';
 
+const match = []
 
-
-const Matches = () => {
-    const { data: allData, error: allError, loading: allLoading } = useQuery(QUERY_ALL_USERS,{
-        pollInterval: 500,
-    });
-    const { data: meData, error: meError, loading: meLoading } = useQuery(QUERY_USER,{
-        pollInterval: 500,
-    });
-
-    const [unlikeUser] = useMutation(UNLIKE_USER);
-
-    if (allLoading || meLoading) {
-        return <h2>LOADING...</h2>;
-    };
-
-    if (allError) {
-        return `Error! ${allError.message}`;
-    };
-    if (meError) {
-        return `Error! ${meError.message}`;
-    };
-    const handleUnlikeUser = async (Id) => {
-        const token = Auth.loggedIn() ? Auth.getToken() : null;
-    
-        if (!token) {
-          return false;
-        }
-    
-        try {
-          await unlikeUser({variables: {_id: Id}});
-        } catch (err) {
-          console.error(err);
-        }
-      };
-
+export default function Matches() {
     return (
-        <div className="container">
-        <h2>
-          {meData.me.matches.length
-            ? `Viewing ${meData.me.matches.length} matches ${meData.me.matches.length === 1 ? 'user' : 'users'}:`
-            : 'You have no matches :('}
-        </h2>
-        <div>
-            {allData.all.map((user) => {
-                if(user.matches.includes(meData.me._id)){
-                    return( <div className="max-w-sm rounded overflow-hidden shadow-lg">
-                                <img className="w-full" src={user.img} alt="User Profile picture"/>
-                                <div className="px-6 py-4">
-                                <div className="font-bold text-xl mb-1">{user.firstname}</div>
-                                <div className="font-bold text-l mb-2">{user.age}, {user.gender}</div>
-                                <p className="text-gray-700 text-base">
-                                {user.aboutme}
-                                </p>
-                                </div>
-                                <div className="px-6 pt-4 pb-2 flex justify-between">
-                                <button onClick={() => handleUnlikeUser(user._id)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 w-1/3 rounded">
-                                    Unlike
-                                </button>
-                                </div>
-                            </div>
-                    )
-                }
-
-            })}
+        <div className="bg-white">
+          <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
+            <h2 className="text-2xl font-extrabold tracking-tight text-gray-900">Your Current Matches</h2>
+    
+            <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+              {match.map((match) => (
+                <div key={match.id} className="group relative">
+                  <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
+                    <img
+                      src={match.imageSrc}
+                      alt={product.imageAlt}
+                      className="w-full h-full object-center object-cover lg:w-full lg:h-full"
+                    />
+                  </div>
+                  <div className="mt-4 flex justify-between">
+                    <div>
+                      <h3 className="text-sm text-gray-700">
+                        <a href={match.href}>
+                          <span aria-hidden="true" className="absolute inset-0" />
+                          {match.name}
+                        </a>
+                      </h3> 
+                    </div>
+                    <p className="text-sm font-medium text-gray-900">{match.age}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-            
-        </div>
-    );
-};
-
-export default Matches;
+      )
+}

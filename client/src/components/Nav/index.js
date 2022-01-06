@@ -70,8 +70,11 @@ export default function Nav({fixed}) {
                                 <div className="w-full relative flex justify-between lg:w-auto px-4 lg:static lg:block lg:justify-end">
                                     <ul className="flex flex-col">
                                         <li className="nav-item">
-                                            <Link to="/login" className="px-3 py-2 flex items-center text-xl font-bold leading-snug text-white hover:opacity-75">Login</Link>
-                                            <Icon icon="icomoon-free:profile" />
+                                            <Link to="/login" className="px-3 py-2 flex items-center text-xl font-bold leading-snug text-white hover:opacity-75">
+                                                Login
+                                                <Icon icon="mdi-light:login" color="white" inline={true}/>
+                                            </Link>
+                                            
                                         </li>
                                     </ul>
                                 </div>
