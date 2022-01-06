@@ -63,7 +63,6 @@ const resolvers = {
       const id = context.user._id;
       // Update ALL Users and pull the LOGGED IN users ID FROM all Users.  Pulling from ALL fields that the logged in Users ID will be
       const updateAllUsers = await User.updateMany(
-        {},
         { $pull: { likes: id, likedby: id, matches: id } },
       )
       if(!updateAllUsers){
