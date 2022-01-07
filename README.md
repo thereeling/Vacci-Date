@@ -2,6 +2,9 @@
 
 Vaccidate is an application that allows users who are vaccinated against the Coronavirus disease (COVID-19) to meet others like themselves. This app is allowing the like minded people to meet other people like themselves in a more intimate way. You can sign up for the application and give as little or as much as you would to to divulge. Think of Tinder, Bumble, or Hinge, but everyone is vaccinated!! 
 
+
+![Vaccidate_ss](./vacci-date.png)
+
 ## Page Link
 
 If you would like the code to the Github Repo click below!
@@ -36,13 +39,8 @@ https://github.com/thereeling/vacci-date
 
 ## Code Link
 
-Heroku Page - 
+Heroku Page - https://powerful-basin-63649.herokuapp.com/
 
-
-## Installation
-To install this application, there is nothing that needs to be done on your end. The only thing that you have to do is click in the link below or the link at the top of the page!
-
-Link ()__________
 
 ## Usage
 
@@ -66,9 +64,7 @@ After you have clicked the link above, you can follow the instructions below!
 
 6. When you match with someone, you will see that under your matches tab.
 
-7. When you want to erase your profile, _____
-
-8. 
+7. When you want to erase your profile, click the delete user button on the edit profile page.   
 
 ## Support
 
