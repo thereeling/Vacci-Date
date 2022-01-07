@@ -7,10 +7,10 @@
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
   "main": "index.js",
   "scripts": {
-    "start": "node server/server.js",
+    "start": "serve -s build",
     "develop": "concurrently \"cd server && npm run watch\" \"cd client && npm start\"",
     "install": "cd server && npm i && cd ../client && npm i",
-    "build": "cd client && npm run build",
+    "heroku-postbuild": "cd client && npm run build",
     "seed": "cd server && npm run seed"
   },
   "repository": {
@@ -25,7 +25,8 @@
   },
   "homepage": "https://github.com/thereeling/vacci-date#readme",
   "dependencies": {
-    "apollo-server-express": "^3.5.0"
+    "apollo-server-express": "^3.5.0",
+    "serve": "^13.0.2"
   },
   "devDependencies": {
     "concurrently": "^6.5.1"
