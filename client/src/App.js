@@ -20,7 +20,7 @@ import Matches from './pages/Matches';
 
 // Have to change http link when we deploy
 const httpLink = createHttpLink({
-  uri: 'https://powerful-basin-63649.herokuapp.com/graphql',
+  uri: '/graphql',
 });
 
 const authLink = setContext((_, { headers }) => {
