@@ -5,7 +5,7 @@
     "node": "14.17.6"
   },
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
-  "main": "index.js",
+  "main": "server/server.js",
   "scripts": {
     "start": "serve -s build",
     "develop": "concurrently \"cd server && npm run watch\" \"cd client && npm start\"",
