@@ -4,6 +4,7 @@ import { useUserContext } from '../utils/GlobalState';
 import { QUERY_ALL_USERS, QUERY_USER } from '../utils/queries';
 import { LIKE_USER } from '../utils/mutations'
 import { FILTERED_USERS } from '../utils/actions';
+import { Icon } from '@iconify/react';
 
 const Dashboard = () => {
     const [currentUser, setCurrentUser] = useState(0);
@@ -98,7 +99,7 @@ const Dashboard = () => {
             console.log(currentUser);
             console.log(likedUsers);
             console.log(initialUsers);
-            return <div className="max-w-sm rounded overflow-hidden shadow-lg">
+            return <div className="max-w-sm border border-pink-500 rounded overflow-hidden shadow-lg">
             {initialUsers[currentUser].img ? <img className="w-full" src={initialUsers[currentUser].img} alt="User Profile picture"/> : <div></div>}
             <div className="px-6 py-4">
               <div className="font-bold text-xl mb-1">{initialUsers[currentUser].firstname}</div>
@@ -108,12 +109,12 @@ const Dashboard = () => {
               </p>
             </div>
             <div className="px-6 pt-4 pb-2 flex justify-between">
-            <button onClick={handleUserOnNoClick} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 w-1/3 rounded">
-                Next
+            <button onClick={handleUserOnNoClick} className="flex items-center animate-pulse border border-pink-500 hover:border-black px-4 py-4 rounded">
+            <Icon icon="bi:hand-thumbs-down" color="black" width="32" height="32" />
             </button>
             
-            <button onClick={handleUserOnYesClick} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 w-1/3 rounded">
-                Like
+            <button onClick={handleUserOnYesClick} className="flex items-center animate-pulse border border-pink-500 hover:border-black px-4 py-4 rounded">
+            <Icon icon="bi:hand-thumbs-up" color="black" width="32" height="32" />
             </button>
             </div>
           </div>

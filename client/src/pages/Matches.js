@@ -52,23 +52,8 @@ export default function Matches() {
             <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
               {allData.all.map((user) => {
                 if(user.matches.includes(meData.me._id)){
-                //   return <div className="group relative">
-                //   <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
-                //   {user.img ? <img className="w-full h-full object-center object-cover lg:w-full lg:h-full" src={user.img} alt="User Profile picture"/> : <div></div>}   
-                //   </div>
-                //   <div className="mt-4 flex justify-between">
-                //     <div>
-                //       <h3 className="text-sm text-gray-700">
-               
-                //           {user.firstname}
-                        
-                //       </h3> 
-                //     </div>
-                //     <p className="text-sm font-medium text-gray-900">{user.age}</p>
-                //   </div>
-                // </div>
-                return <div className="max-w-sm rounded overflow-hidden shadow-lg">
-                {user.img ? <img className="w-full h-full object-center object-cover lg:w-full lg:h-full" src={user.img} alt="User Profile picture"/> : <div></div>}    
+                return <div key={user} className="max-w-sm rounded overflow-hidden shadow-lg">
+                {user.img ? <img className="w-full" src={user.img} alt="User Profile picture"/> : <div></div>}    
                 <div className="px-6 py-4">
                     <div className="font-bold text-xl mb-1">{user.firstname}</div>
                     <div className="font-bold text-l mb-2">{user.age}, {user.gender}</div>
@@ -77,7 +62,7 @@ export default function Matches() {
                     </p>
                 </div>
                 <div className="px-6 pt-4 pb-2 flex justify-between">
-                <button onClick={() => handleUnlikeUser(user._id)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 w-1/3 rounded">
+                <button onClick={() => handleUnlikeUser(user._id)} className="bg-pink-500 text-white font-bold hover:bg-white hover:text-pink-500 py-2 px-4 w-1/3 rounded">
                     Unlike
                 </button>
                 </div>
