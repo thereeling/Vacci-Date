@@ -1,6 +1,5 @@
 const db = require('./connection');
 const { User } = require('../models');
-const bcrypt = require('bcrypt');
 
 db.once('open', async () => {
     await User.deleteMany();

@@ -4,15 +4,23 @@ import { UPDATE_USER, DELETE_USER } from '../utils/mutations';
 import stateNames from '../utils/stateNames';
 import genderOptions from '../utils/genderOptions';
 import Auth from '../utils/auth'
+import { Icon } from '@iconify/react';
 
 import { useQuery } from '@apollo/client';
 import { QUERY_USER } from '../utils/queries';
 
 const Profile = () => {
+  const { data, loading, error: userError } = useQuery(QUERY_USER,{
+    pollInterval: 500,
+  });
+
+  if(loading){
+    <h1>LOADING...</h1>
+  }
+  const my = data?.me || {};
   const [formState, setFormState] = useState();
   const [updateUser] = useMutation(UPDATE_USER);
   const [deleteUser] = useMutation(DELETE_USER);
-
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     if (formState.agerangemax < formState.agerangemin) {
@@ -32,7 +40,8 @@ const Profile = () => {
           preference: formState.preference || my.preference,
           agerangemin: parseInt(formState.agerangemin) || parseInt(my.agerangemin),
           agerangemax: parseInt(formState.agerangemax) || parseInt(my.agerangemax),
-          aboutme: formState.aboutme
+          aboutme: formState.aboutme,
+          img: checkedAvatar
         }
       },
     });
@@ -48,9 +57,6 @@ const Profile = () => {
     });
   };
 
-  const { data, error: userError } = useQuery(QUERY_USER);
-  const my = data?.me || {};
-
   // We need to set checkedState based on the queried preferences
   const genderState = genderOptions.map(function (gender) {
     if (my.preference.includes(gender)) {
@@ -59,6 +65,8 @@ const Profile = () => {
       return false
     }
   });
+
+  const [checkedAvatar, setCheckedAvatar] = useState(`${my.img}`);
 
   const [checkedState, setCheckedState] = useState(genderState);
 
@@ -81,6 +89,9 @@ const Profile = () => {
       preference: genderArray,
     });
   }
+  const handleAvatarClick = (e) => {
+    setCheckedAvatar(e.target.value)
+  };
 
   const handleDelete = async (event) => {
     if (window.confirm("Do you really want to delete your profile?")) {
@@ -95,8 +106,10 @@ const Profile = () => {
         <div className="md:grid md:grid-cols-3 md:gap-6 font-mono">
           <div className="md:col-span-1">
             <div className="px-4 sm:px-0">
-              <h3 className="text-lg font-medium leading-6 text-pink-500">Profile</h3>
-              <p className="mt-1 text-sm text-pink-800">
+              <h3 className="text-lg font-medium leading-6 text-gray-900">
+                Profile
+              </h3>
+              <p className="mt-1 text-sm text-gray-700">
                 Hello, {my.firstname}!<br></br>
                 Here, you can update your Vacci-Date Profile.
               </p>
@@ -107,7 +120,7 @@ const Profile = () => {
               <div className="shadow sm:rounded-md sm:overflow-hidden">
                 <div className="px-4 py-5 bg-white space-y-6 sm:p-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700" htmlFor="username">
+                    <label className="block text-md font-medium text-gray-700" htmlFor="username">
                       My Username:
                     </label>
                     <div className="mt-1">
@@ -115,13 +128,13 @@ const Profile = () => {
                         id="username"
                         name="username"
                         rows={1}
-                        className="shadow-sm focus:ring-pink-500 focus:border-pink-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-pink-600 focus:border-pink-500 focus:z-10 sm:text-sm"
                         required
                         defaultValue={my.username}
                         onChange={handleChange}
                       />
                     </div>
-                    <label htmlFor="about-me" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="about-me" className="block text-md font-medium text-gray-700">
                       About Me:
                     </label>
                     <div className="mt-1">
@@ -130,7 +143,7 @@ const Profile = () => {
                         id="aboutme"
                         name="aboutme"
                         rows={3}
-                        className="shadow-sm focus:ring-pink-500 focus:border-pink-500 mt-1 block w-full sm:text-sm border border-gray-300 rounded-md"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-pink-600 focus:border-pink-500 focus:z-10 sm:text-sm"
                         onChange={handleChange}
                       />
                     </div>
@@ -139,31 +152,66 @@ const Profile = () => {
                     </p>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700" htmlFor="img">
+                    <label className="block text-md font-medium text-gray-700" htmlFor="avatarlist">
                       Avatar Selection:
                     </label>
-                    <div className="mt-1 flex items-center">
-                      <span className="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
-                        <svg className="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                        </svg>
-                      </span>
-                      <button
-                        type="button"
-                        className="ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-pink-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-300"
-                      >
-                        Change
-                      </button>
-                    </div>
+                      <ul id='avatarlist' className="grid grid-cols-4 gap-x-5 m-10 max-w-md mx-auto">
+                        <li className='relative'>
+                          <input
+                          className="sr-only peer"
+                          placeholder="Please choose and image"
+                          name="img"
+                          type="radio"
+                          id="maleavatar1"
+                          defaultChecked={'https://vaccidate-images2.s3.amazonaws.com/maleavatar1.jpeg' === checkedAvatar}
+                          value='https://vaccidate-images2.s3.amazonaws.com/maleavatar1.jpeg'
+                          onChange={handleAvatarClick}
+                          />
+                          <label htmlFor='maleavatar1' className='flex p-5 bg-white border border-gray-300 rounded-lg cursor-pointer focus:outline-none hover:bg-gray-50 peer-checked:ring-pink-500 peer-checked:ring-2 peer-checked:border-transparent'><img src='https://vaccidate-images2.s3.amazonaws.com/maleavatar1.jpeg' /></label>
+                        </li>
+                        <li className='relative'>
+                          <input
+                          className="sr-only peer"
+                          placeholder="Please choose and image"
+                          name="img"
+                          type="radio"
+                          id="maleavatar2"
+                          defaultChecked={'https://vaccidate-images2.s3.amazonaws.com/maleavatar2.jpeg' === checkedAvatar}
+                          value='https://vaccidate-images2.s3.amazonaws.com/maleavatar2.jpeg'
+                          onChange={handleAvatarClick}
+                          />
+                          <label htmlFor='maleavatar2' className='flex p-5 bg-white border border-gray-300 rounded-lg cursor-pointer focus:outline-none hover:bg-gray-50 peer-checked:ring-pink-500 peer-checked:ring-2 peer-checked:border-transparent'><img src='https://vaccidate-images2.s3.amazonaws.com/maleavatar2.jpeg' /></label>
+                        </li>
+                        <li className='relative'>
+                          <input
+                          className="sr-only peer"
+                          placeholder="Please choose and image"
+                          name="img"
+                          type="radio"
+                          id="femaleavatar1"
+                          defaultChecked={'https://vaccidate-images2.s3.amazonaws.com/womanavatar1.jpeg' === checkedAvatar}
+                          value='https://vaccidate-images2.s3.amazonaws.com/womanavatar1.jpeg'
+                          onChange={handleAvatarClick}
+                          />
+                          <label htmlFor='femaleavatar1' className='flex p-5 bg-white border border-gray-300 rounded-lg cursor-pointer focus:outline-none hover:bg-gray-50 peer-checked:ring-pink-500 peer-checked:ring-2 peer-checked:border-transparent'><img src='https://vaccidate-images2.s3.amazonaws.com/womanavatar1.jpeg' /></label>
+                        </li>
+                        <li className='relative'>
+                          <input
+                          className="sr-only peer"
+                          placeholder="Please choose an image"
+                          name="img"
+                          type="radio"
+                          id="femaleavatar2"
+                          defaultChecked={'https://vaccidate-images2.s3.amazonaws.com/womanavatar2.jpeg' === checkedAvatar}
+                          value='https://vaccidate-images2.s3.amazonaws.com/womanavatar2.jpeg'
+                          onChange={handleAvatarClick}
+                          />
+                          <label htmlFor='femaleavatar2' className='flex p-5 bg-white border border-gray-300 rounded-lg cursor-pointer focus:outline-none hover:bg-gray-50 peer-checked:ring-pink-500 peer-checked:ring-2 peer-checked:border-transparent'><img src='https://vaccidate-images2.s3.amazonaws.com/womanavatar2.jpeg' /></label>
+                        </li>
+                      </ul>
                   </div>
                 </div>
                 <div className="px-4 py-3 bg-pink-50 text-right sm:px-6">
-                  <button
-                    type="submit"
-                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
-                  >
-                    Save
-                  </button>
                 </div>
               </div>
             </form>
@@ -181,7 +229,9 @@ const Profile = () => {
         <div className="md:grid md:grid-cols-3 md:gap-6">
           <div className="md:col-span-1">
             <div className="px-4 sm:px-0">
-              <h3 className="text-lg font-medium font-mono leading-6 text-gray-900">Personal Information</h3>
+              <h3 className="text-lg font-medium font-mono leading-6 text-gray-900">
+                Personal Information
+              </h3>
             </div>
           </div>
           <div className="mt-5 md:mt-0 md:col-span-2">
@@ -190,7 +240,7 @@ const Profile = () => {
                 <div className="px-4 py-5 bg-white sm:p-6">
                   <div className="grid grid-cols-6 gap-6">
                     <div className="col-span-6 sm:col-span-4">
-                      <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="email" className="block text-md font-medium text-gray-700">
                         Email address:
                       </label>
                       <input
@@ -198,26 +248,26 @@ const Profile = () => {
                         name="email"
                         id="email"
                         defaultValue={my.email}
-                        className="mt-1 focus:ring-pink-500 focus:border-pink-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-pink-600 focus:border-pink-500 focus:z-10 sm:text-sm"
                         onChange={handleChange}
                       />
                     </div>
                     <div className="col-span-6 sm:col-span-3">
-                      <label className="block text-sm font-medium text-gray-700" htmlFor="location">
+                      <label className="block text-md font-medium text-gray-700" htmlFor="location">
                         Location:
                       </label>
                       <select
                         defaultValue={my.location}
                         name="location"
                         id="location"
-                        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-pink-600 focus:border-pink-500 focus:z-10 sm:text-sm"
                         onChange={handleChange}
                       >
                         {stateNames.map(state => <option key={state} value={state}>{state}</option>)}
                       </select>
                     </div>
                     <div className="col-span-6 sm:col-span-3">
-                      <label htmlFor="age" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="age" className="block text-md font-medium text-gray-700">
                         Age:
                       </label>
                       <input
@@ -226,12 +276,12 @@ const Profile = () => {
                         name="age"
                         id="age"
                         required
-                        className="mt-1 focus:ring-pink-500 focus:border-pink-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-pink-600 focus:border-pink-500 focus:z-10 sm:text-sm"
                         onChange={handleChange}
                       />
                     </div>
-                    <div className="col-span-6 sm:col-span-3">
-                      <label htmlFor="gender" className="block text-sm font-medium text-gray-700">
+                    <div className="col-span-6 sm:col-span-4">
+                      <label htmlFor="gender" className="block text-md font-medium text-gray-700">
                         My Gender:
                       </label>
                       <select
@@ -239,7 +289,7 @@ const Profile = () => {
                         name="gender"
                         defaultValue={my.gender}
                         required
-                        className="mt-1 focus:ring-pink-500 focus:border-pink-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-pink-600 focus:border-pink-500 focus:z-10 sm:text-sm"
                         onChange={handleChange}
                       >
                         <option value="Male">Male</option>
@@ -247,34 +297,34 @@ const Profile = () => {
                         <option value="Non-binary">Non-binary</option>
                       </select>
                     </div>
-                    <div className="col-span-6">
-                      <label htmlFor="preference" className="block text-sm font-medium text-gray-700">
+                    <div className="col-span-6 sm:col-span-4">
+                      <label htmlFor="preference" className="block text-md font-medium text-gray-700">
                         Match Preferences:
                       </label>
                       {genderOptions.map((gender, index) => {
                         return (
                           <div key={index} className="mr-3">
+                            <label htmlFor={gender} className="block text-sm font-medium text-gray-700">{gender}</label>
                             {my.preference.includes(gender) ?
                               <input
-                                type="checkbox"
-                                id={gender}
-                                name={gender}
-                                value={gender}
-                                defaultChecked="checked"
-                                className="mt-1 focus:ring-pink-500 focus:border-pink-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                onChange={() => handleGenderClick(index)}
-                              />
-                              :
-                              <input
-                                type="checkbox"
-                                id={gender}
-                                name={gender}
-                                value={gender}
-                                className="mt-1 focus:ring-pink-500 focus:border-pink-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                                onChange={() => handleGenderClick(index)}
-                              />
+                              type="checkbox"
+                              id={gender}
+                              name={gender}
+                              value={gender}
+                              defaultChecked="checked"
+                              className=""
+                              onChange={() => handleGenderClick(index)}
+                            />
+                            :
+                            <input
+                              type="checkbox"
+                              id={gender}
+                              name={gender}
+                              value={gender}
+                              className=""
+                              onChange={() => handleGenderClick(index)}
+                            />
                             }
-                            <label htmlFor={gender} className="block text-sm font-medium text-gray-700">{gender}</label>
                           </div>
                         )
                       })}
@@ -288,12 +338,12 @@ const Profile = () => {
                         id="agerangemin"
                         name="agerangemin"
                         type="number"
-                        className="mt-1 focus:ring-pink-500 focus:border-pink-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-pink-600 focus:border-pink-500 focus:z-10 sm:text-sm"
                         onChange={handleChange}
                       />
                     </div>
                     <div className="col-span-6 sm:col-span-3">
-                      <label htmlFor="agerangemin" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="agerangemax" className="block text-sm font-medium text-gray-700">
                         Maximum Age:
                       </label>
                       <input
@@ -301,7 +351,7 @@ const Profile = () => {
                         id="agerangemax"
                         name="agerangemax"
                         type="number"
-                        className="mt-1 focus:ring-pink-500 focus:border-pink-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                        className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-pink-600 focus:border-pink-500 focus:z-10 sm:text-sm"
                         onChange={handleChange}
                       />
                     </div>
@@ -310,15 +360,17 @@ const Profile = () => {
                 <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
                   <button
                     type="submit"
-                    className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-pink-600 hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
                   >
                     Save
                   </button>
                   <button
-                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                    onClick={handleDelete}
-                  >
-                    Delete Profile
+                    className="flex items-center bg-none hover:text-pink-600 text-black font-bold py-2 px-4 rounded" 
+                    onClick={handleDelete} 
+                  > 
+                    Delete Profile 
+                    <Icon icon="carbon:trash-can" color="black" width="20" height="20"/>
+                    
                   </button>
                 </div>
               </div>
@@ -329,14 +381,5 @@ const Profile = () => {
     </>
   )
 }
-
-//Not sure if we need this for avatar section
-//<input
-//placeholder="img"
-//name="img"
-//type="img"
-//id="img"
-// onChange={handleChange}
-
 
 export default Profile;

@@ -22,7 +22,7 @@ const Home = () => {
                     <img className="rounded h-auto w-full" src="./images/coffee-hearts.png" alt="cafe latte with hearts"></img>
                     <br></br>
                     <button 
-                        className="outline rounded hover:outline-pink-400/[.75] outline-offset-3 bg-pink-500 text-white text-5xl"
+                        className="animate-pulse outline rounded hover:outline-pink-400/[.75] outline-offset-3 bg-pink-500 text-white text-5xl"
                         type="button"
                     >
                         <Link to ="/signup">

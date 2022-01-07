@@ -55,5 +55,5 @@ const typeDefs = gql`
         unlike(_id: ID): [User]
     }
 `;
-// deleteUser Mutation works, just need to find out what we want to return after.
+
 module.exports = typeDefs;
